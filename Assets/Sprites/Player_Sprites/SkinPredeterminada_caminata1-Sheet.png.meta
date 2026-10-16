@@ -74,7 +74,9 @@ TextureImporter:
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
+  spriteTessellationMethod: 0
   spriteTessellationDetail: -1
+  spriteGeometrySubdivision: -1
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
@@ -114,6 +116,32 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WindowsStoreApps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
@@ -123,10 +151,10 @@ TextureImporter:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 141
+        width: 140
         height: 240
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -143,12 +171,12 @@ TextureImporter:
       name: SkinPredeterminada_caminata1-Sheet_1
       rect:
         serializedVersion: 2
-        x: 159
+        x: 160
         y: 0
-        width: 162
-        height: 221
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 160
+        height: 220
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -165,12 +193,12 @@ TextureImporter:
       name: SkinPredeterminada_caminata1-Sheet_2
       rect:
         serializedVersion: 2
-        x: 319
+        x: 320
         y: 0
-        width: 142
-        height: 231
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 140
+        height: 230
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -187,12 +215,12 @@ TextureImporter:
       name: SkinPredeterminada_caminata1-Sheet_3
       rect:
         serializedVersion: 2
-        x: 479
+        x: 480
         y: 0
-        width: 132
+        width: 130
         height: 240
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -209,12 +237,12 @@ TextureImporter:
       name: SkinPredeterminada_caminata1-Sheet_4
       rect:
         serializedVersion: 2
-        x: 639
+        x: 640
         y: 0
-        width: 132
-        height: 231
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 130
+        height: 230
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -231,12 +259,12 @@ TextureImporter:
       name: SkinPredeterminada_caminata1-Sheet_5
       rect:
         serializedVersion: 2
-        x: 799
+        x: 800
         y: 0
-        width: 132
+        width: 130
         height: 240
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -253,12 +281,12 @@ TextureImporter:
       name: SkinPredeterminada_caminata1-Sheet_6
       rect:
         serializedVersion: 2
-        x: 959
+        x: 960
         y: 0
-        width: 142
+        width: 140
         height: 240
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -275,7 +303,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: a69f802dc9b314a41b9bd947f7d451ef
     internalID: 0
     vertices: []
     indices: 
@@ -283,7 +311,9 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries: []
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":64.0,"y":64.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.0},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":7,"pivotUnitMode":0,"slicingType":0,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
       SkinPredeterminada_caminata1-Sheet_0: 8396084472859206590
       SkinPredeterminada_caminata1-Sheet_1: -7299866671790213069
