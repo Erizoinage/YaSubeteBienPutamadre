@@ -65,7 +65,9 @@ TextureImporter:
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
+  spriteTessellationMethod: 0
   spriteTessellationDetail: -1
+  spriteGeometrySubdivision: -1
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
@@ -105,6 +107,32 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WindowsStoreApps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
@@ -112,12 +140,12 @@ TextureImporter:
       name: SkinPredeterminada-Sheet_0
       rect:
         serializedVersion: 2
-        x: 109
-        y: 49
-        width: 152
-        height: 232
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 110
+        y: 50
+        width: 150
+        height: 230
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -134,12 +162,12 @@ TextureImporter:
       name: SkinPredeterminada-Sheet_1
       rect:
         serializedVersion: 2
-        x: 429
-        y: 49
-        width: 142
-        height: 242
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 430
+        y: 50
+        width: 140
+        height: 240
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -156,12 +184,12 @@ TextureImporter:
       name: SkinPredeterminada-Sheet_2
       rect:
         serializedVersion: 2
-        x: 749
-        y: 49
-        width: 152
-        height: 232
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 750
+        y: 50
+        width: 150
+        height: 230
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -178,12 +206,12 @@ TextureImporter:
       name: SkinPredeterminada-Sheet_3
       rect:
         serializedVersion: 2
-        x: 1069
-        y: 49
-        width: 142
-        height: 242
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 1070
+        y: 50
+        width: 140
+        height: 240
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -200,7 +228,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: c88fc5e8bf8c650418eb1b4dfdb1b215
     internalID: 0
     vertices: []
     indices: 
@@ -208,7 +236,9 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries: []
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":64.0,"y":64.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.0},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":7,"pivotUnitMode":0,"slicingType":0,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
       SkinPredeterminada-Sheet_0: 1567949538287413433
       SkinPredeterminada-Sheet_1: -6206630903174921303
