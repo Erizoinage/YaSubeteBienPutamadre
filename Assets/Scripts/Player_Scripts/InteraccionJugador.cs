@@ -3,36 +3,42 @@ using UnityEngine.InputSystem;
 
 public class InteraccionJugador : MonoBehaviour
 {
+    [Header("Referencias")]
     [SerializeField] private MovimientoJugador movimientoJugador;
-    [SerializeField] private Transform puntoInteraccion;
+    [SerializeField] private Transform zonaInteraccion;
+    [SerializeField] private ZonaInteraccion detectorInteraccion;
+
+    [Header("Configuración")]
     [SerializeField] private float distanciaInteraccion = 0.6f;
-    [SerializeField] private float radioInteraccion = 0.35f;
-    [SerializeField] private LayerMask capaNPC;
 
     private bool interaccionActiva;
 
     private void Start()
     {
         ActivarInteraccion();
-        ActualizarPuntoInteraccion();
+        ActualizarZonaInteraccion();
     }
 
     private void Update()
     {
-        ActualizarPuntoInteraccion();
+        ActualizarZonaInteraccion();
     }
 
-    private void ActualizarPuntoInteraccion()
+    private void ActualizarZonaInteraccion()
     {
-        if (movimientoJugador == null || puntoInteraccion == null)
+        if (movimientoJugador == null || zonaInteraccion == null)
             return;
 
-        Vector2 direccion = movimientoJugador.UltimaDireccion;
+        Vector2 direccion =
+            movimientoJugador.UltimaDireccion;
 
-        puntoInteraccion.localPosition =direccion * distanciaInteraccion;
+        zonaInteraccion.localPosition =
+            direccion * distanciaInteraccion;
     }
 
-    public void OnInteract(InputAction.CallbackContext contexto)
+    public void OnInteract(
+        InputAction.CallbackContext contexto
+    )
     {
         if (!interaccionActiva)
             return;
@@ -40,27 +46,33 @@ public class InteraccionJugador : MonoBehaviour
         if (!contexto.performed)
             return;
 
-        BuscarNPC();
+        IntentarInteractuar();
     }
 
-    private void BuscarNPC()
+    private void IntentarInteractuar()
     {
-        if (puntoInteraccion == null)
-            return;
-
-        Collider2D resultado = Physics2D.OverlapCircle(
-            puntoInteraccion.position,
-            radioInteraccion,
-            capaNPC
-        );
-
-        if (resultado == null)
+        if (detectorInteraccion == null)
         {
-            Debug.Log("No hay un NPC delante");
+            Debug.LogWarning(
+                "No se asignó el detector de interacción."
+            );
+
             return;
         }
 
-        Debug.Log("NPC detectado: " + resultado.gameObject.name);
+        ITocable objetoDetectado =
+            detectorInteraccion.ObtenerObjetoMasCercano();
+
+        if (objetoDetectado == null)
+        {
+            Debug.Log(
+                "No hay ningún objeto interactuable delante."
+            );
+
+            return;
+        }
+
+        objetoDetectado.Interactuar();
     }
 
     public void ActivarInteraccion()
@@ -81,18 +93,5 @@ public class InteraccionJugador : MonoBehaviour
     public bool EstaActivaLaInteraccion()
     {
         return interaccionActiva;
-    }
-
-    private void OnDrawGizmosSelected()
-    {
-        if (puntoInteraccion == null)
-            return;
-
-        Gizmos.color = Color.yellow;
-
-        Gizmos.DrawWireSphere(
-            puntoInteraccion.position,
-            radioInteraccion
-        );
     }
 }
