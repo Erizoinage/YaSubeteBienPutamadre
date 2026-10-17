@@ -12,6 +12,7 @@ public class MovimientoJugador : MonoBehaviour
 
     private Vector2 movimiento;
     private Vector2 ultimaDireccion = Vector2.down;
+    public Vector2 UltimaDireccion => ultimaDireccion;
 
     private bool movimientoActivo;
 
