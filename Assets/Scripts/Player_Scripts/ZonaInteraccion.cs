@@ -8,7 +8,8 @@ public class ZonaInteraccion : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D otro)
     {
-        ITocable interactuable = otro.GetComponentInParent<ITocable>();
+        ITocable interactuable =
+            otro.GetComponentInParent<ITocable>();
 
         if (interactuable == null)
             return;
@@ -26,12 +27,15 @@ public class ZonaInteraccion : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D otro)
     {
-        ITocable interactuable = otro.GetComponentInParent<ITocable>();
+        ITocable interactuable =
+            otro.GetComponentInParent<ITocable>();
 
         if (interactuable == null)
             return;
 
         objetosDetectados.Remove(interactuable);
+
+        interactuable.NotificarSalidaDeZona();
 
         Debug.Log(
             "Salió de la zona: " +
@@ -75,6 +79,12 @@ public class ZonaInteraccion : MonoBehaviour
 
     private void OnDisable()
     {
+        foreach (ITocable objeto in objetosDetectados)
+        {
+            if (objeto != null)
+                objeto.NotificarSalidaDeZona();
+        }
+
         objetosDetectados.Clear();
     }
 }

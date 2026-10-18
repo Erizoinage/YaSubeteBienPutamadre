@@ -29,16 +29,13 @@ public class InteraccionJugador : MonoBehaviour
         if (movimientoJugador == null || zonaInteraccion == null)
             return;
 
-        Vector2 direccion =
-            movimientoJugador.UltimaDireccion;
+        Vector2 direccion = movimientoJugador.UltimaDireccion;
 
         zonaInteraccion.localPosition =
             direccion * distanciaInteraccion;
     }
 
-    public void OnInteract(
-        InputAction.CallbackContext contexto
-    )
+    public void OnInteract(InputAction.CallbackContext contexto)
     {
         if (!interaccionActiva)
             return;
