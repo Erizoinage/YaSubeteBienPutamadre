@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74178096d163ae5499056cb300d3821d, type: 3}
+  m_Name: "pocionPeque\xF1a"
+  m_EditorClassIdentifier: Assembly-CSharp::ItemData
+  itemID: 2
+  Nombre: "Pocion Peque\xF1a"
+  icon: {fileID: 876571696635403007, guid: cd1fc941f95f4a1418d2ec0bc99e5ede, type: 3}
+  maxStackSize: 1
+  descripcion: te cura pero poquito
