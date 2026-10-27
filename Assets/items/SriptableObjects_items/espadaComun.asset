@@ -17,3 +17,4 @@ MonoBehaviour:
   icon: {fileID: 5291881858394707114, guid: 59788ddfcc5eeed4693d3b04465562c4, type: 3}
   maxStackSize: 1
   descripcion: 'Espada '
+  SpriteEnMano: {fileID: 7262247522112448549, guid: 346fd20623dd3ae46aa8ff3089ace060, type: 3}

@@ -17,3 +17,4 @@ MonoBehaviour:
   icon: {fileID: 876571696635403007, guid: cd1fc941f95f4a1418d2ec0bc99e5ede, type: 3}
   maxStackSize: 1
   descripcion: te cura pero poquito
+  SpriteEnMano: {fileID: 4099692569211243786, guid: bf1be52e2fd2c9b468c29212a26b2cad, type: 3}

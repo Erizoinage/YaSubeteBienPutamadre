@@ -7,6 +7,9 @@ public class ItemData : ScriptableObject
     public string Nombre;
     public Sprite icon;
     public int maxStackSize=1;
+    public string descripcion;
 
-    public string descripcion;    
+    [Header("Sprite Mano")]
+    public GameObject SpriteEnMano;
+    
 }
