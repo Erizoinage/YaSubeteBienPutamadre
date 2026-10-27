@@ -35,13 +35,12 @@ public class BarController : MonoBehaviour
         if (InventoryManager.Instance != null)
         {
             InventoryManager.Instance.OnInventoryChanged -= RefreshHotBar;
+            InventoryManager.Instance.OnSelectedSlotChanged -= RefreshSelection;
         }
+
     }
 
-    private void OnUIReload(
-        UnityEngine.UIElements.PanelRenderer renderer,
-        VisualElement rootElement,
-        int version)
+    private void OnUIReload(UnityEngine.UIElements.PanelRenderer renderer, VisualElement rootElement, int version)
     {
         if (rootElement == null)
             return;
@@ -64,9 +63,12 @@ public class BarController : MonoBehaviour
         {
             InventoryManager.Instance.OnInventoryChanged -= RefreshHotBar;
             InventoryManager.Instance.OnInventoryChanged += RefreshHotBar;
+            InventoryManager.Instance.OnSelectedSlotChanged -= RefreshSelection;
+            InventoryManager.Instance.OnSelectedSlotChanged += RefreshSelection;
         }
 
         RefreshHotBar();
+        RefreshSelection();
     }
 
     private void RefreshHotBar()
@@ -100,6 +102,33 @@ public class BarController : MonoBehaviour
                 icon.sprite = null;
                 quantityLabel.text = "";
             }
+        }
+    }
+
+    private void RefreshSelection()
+    {
+        if (InventoryManager.Instance == null || slotElements == null)
+            return;
+
+        int selected = InventoryManager.Instance.SelectedSlot;
+
+        for (int i = 0; i < slotElements.Length; i++)
+        {
+            VisualElement slotElement = slotElements[i];
+            if (slotElement == null)
+                continue;
+
+            bool isSelected = i == selected;
+            if (isSelected)
+                slotElement.AddToClassList("Slot_Style1--Selected");
+            else
+                slotElement.RemoveFromClassList("Slot_Style1--Selected");
+
+            float borderWidth = isSelected ? 4f : 0f;
+            slotElement.style.borderTopWidth = borderWidth;
+            slotElement.style.borderRightWidth = borderWidth;
+            slotElement.style.borderBottomWidth = borderWidth;
+            slotElement.style.borderLeftWidth = borderWidth;
         }
     }
 }

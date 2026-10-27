@@ -74,6 +74,14 @@ public class MovimientoJugador : MonoBehaviour
         ActualizarDireccionVisual();
     }
 
+    public void OnDropItem(InputAction.CallbackContext contexto)
+    {
+        if (!contexto.performed || InventoryManager.Instance == null)
+            return;
+
+        InventoryManager.Instance.DropSelectedItem(transform.position, ultimaDireccion);
+    }
+
     private void ActualizarAnimaciones(bool seMueve)
     {
         if (animator == null)

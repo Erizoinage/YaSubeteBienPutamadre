@@ -17,6 +17,18 @@ public class Input_BarController : MonoBehaviour
         hotBarSelectAction.action.performed -= OnHotBarSelect;
     }
 
+    private void Update()
+    {
+        if (Mouse.current == null || InventoryManager.Instance == null)
+            return;
+
+        float scroll = Mouse.current.scroll.ReadValue().y;
+        if (scroll != 0f)
+        {
+            InventoryManager.Instance.SelectNextSlot(scroll > 0f ? -1 : 1);
+        }
+    }
+
     private void OnHotBarSelect(InputAction.CallbackContext context)
     {
         string keyName = context.control.name;

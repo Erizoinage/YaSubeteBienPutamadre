@@ -105,6 +105,26 @@
                     "interactions": "",
                     "initialStateCheck": false,
                     "priority": 0
+                },
+                {
+                    "name": "ScrollBar",
+                    "type": "Value",
+                    "id": "8f16a59e-9265-49a2-9a18-f1fd9efe4f12",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true,
+                    "priority": 0
+                },
+                {
+                    "name": "SoltarItem",
+                    "type": "Button",
+                    "id": "db87a4d8-bfa8-4f31-96fc-29bd32132068",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false,
+                    "priority": 0
                 }
             ],
             "bindings": [
@@ -545,6 +565,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "BarSelect",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3e8ce2c6-03e6-4ecd-bf7b-d2d4a5659328",
+                    "path": "<Mouse>/scroll/y",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ScrollBar",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d39d5402-3f69-41f5-a841-466df8775c52",
+                    "path": "<Keyboard>/f",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SoltarItem",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

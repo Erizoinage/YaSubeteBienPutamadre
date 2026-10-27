@@ -63,4 +63,50 @@ public class InventoryManager : MonoBehaviour
         SelectedSlot = index;
         OnSelectedSlotChanged?.Invoke();
     }
+
+    public void SelectNextSlot(int direction)
+    {
+        if (slots == null || slots.Length == 0 || direction == 0) return;
+
+        int nextSlot = (SelectedSlot + direction + slots.Length) % slots.Length;
+        SelectSlot(nextSlot);
+    }
+
+    public void DropSelectedItem(Vector3 playerPosition, Vector2 dropDirection)
+    {
+        if (slots == null || SelectedSlot < 0 || SelectedSlot >= slots.Length)
+            return;
+
+        InventorySlot selectedSlot = slots[SelectedSlot];
+        if (selectedSlot == null || selectedSlot.itemData == null || selectedSlot.quantity <= 0)
+            return;
+
+        if (selectedSlot.itemData.icon == null)
+        {
+            Debug.LogError($"El objeto '{selectedSlot.itemData.Nombre}' no tiene un icono para representarlo en el mundo.", this);
+            return;
+        }
+
+        if (dropDirection.sqrMagnitude == 0f)
+            dropDirection = Vector2.down;
+
+        Vector3 dropPosition = playerPosition + (Vector3)(dropDirection.normalized * 2.5f);
+        GameObject droppedObject = new GameObject($"Dropped {selectedSlot.itemData.Nombre}");
+        droppedObject.transform.position = dropPosition;
+
+        SpriteRenderer spriteRenderer = droppedObject.AddComponent<SpriteRenderer>();
+        spriteRenderer.sprite = selectedSlot.itemData.icon;
+
+        BoxCollider2D pickupCollider = droppedObject.AddComponent<BoxCollider2D>();
+        pickupCollider.isTrigger = true;
+
+        PIckable pickable = droppedObject.AddComponent<PIckable>();
+        pickable.Initialize(selectedSlot.itemData, 1);
+
+        selectedSlot.quantity--;
+        if (selectedSlot.quantity == 0)
+            slots[SelectedSlot] = null;
+
+        OnInventoryChanged?.Invoke();
+    }
 }

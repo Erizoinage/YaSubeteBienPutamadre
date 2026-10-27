@@ -15,27 +15,34 @@ public class PIckable : MonoBehaviour
 
     public int Quantity => quantity;
 
+    public void Initialize(ItemData data, int amount)
+    {
+        itemData = data;
+        quantity = amount;
+        _pickedUp = false;
+    }
+
     public bool TryPickUp()
     {
-        if (_pickedUp || itemData == null) return false;
+        if (_pickedUp || itemData == null || InventoryManager.Instance == null) return false;
 
         _pickedUp = true;
         OnPickedUp();
-        return true;
+        return _pickedUp;
     }
 
     private void OnPickedUp()
     {
-
-        bool added = (InventoryManager.Instance.AddItem(itemData, quantity));
+        bool added = InventoryManager.Instance.AddItem(itemData, quantity);
         if (added)
         {
             Debug.Log($"Recogido{itemData.Nombre} * {quantity}");
-        if (destroyOnPickUp)
-        Destroy(gameObject);
+            if (destroyOnPickUp)
+                Destroy(gameObject);
         }
-
-
-        
+        else
+        {
+            _pickedUp = false;
+        }
     }
 }
