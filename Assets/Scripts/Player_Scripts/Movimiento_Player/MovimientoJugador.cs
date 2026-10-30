@@ -97,13 +97,10 @@ public class MovimientoJugador : MonoBehaviour
         transform.localScale = escala;
     }
 
-    // Puedes llamar esta función cuando cierres el inventario.
     public void ActivarMovimiento()
     {
         movimientoActivo = true;
     }
-
-    // Puedes llamar esta función cuando abras el inventario.
     public void DesactivarMovimiento()
     {
         movimientoActivo = false;
@@ -115,7 +112,6 @@ public class MovimientoJugador : MonoBehaviour
         ActualizarAnimaciones(false);
     }
 
-    // Función cómoda para controlar ambos estados.
     public void EstablecerMovimientoActivo(bool estado)
     {
         if (estado)
@@ -127,5 +123,13 @@ public class MovimientoJugador : MonoBehaviour
     public bool EstaActivoElMovimiento()
     {
         return movimientoActivo;
+    }
+
+    public void OnInventory(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            FindAnyObjectByType<InventoryManager>();
+        }
     }
 }
