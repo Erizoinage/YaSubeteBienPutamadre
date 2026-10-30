@@ -8460,6 +8460,7 @@ GameObject:
   - component: {fileID: 848857141}
   - component: {fileID: 848857143}
   - component: {fileID: 848857144}
+  - component: {fileID: 848857145}
   m_Layer: 5
   m_Name: Inventario
   m_TagString: Untagged
@@ -8567,6 +8568,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Input_BarController
   hotBarSelectAction: {fileID: 8036486157216366802, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
+--- !u!114 &848857145
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 848857140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e0ca59d7c5fbd541891343e98d6553a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FullInventoryUIController
+  panelRenderer: {fileID: 848857141}
+  toggleInventory: {fileID: 0}
+  playerInput: {fileID: 1489660677}
 --- !u!1 &1123620141
 GameObject:
   m_ObjectHideFlags: 0
@@ -8925,6 +8941,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: db87a4d8-bfa8-4f31-96fc-29bd32132068
     m_ActionName: 'Player/SoltarItem[/Keyboard/f]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 848857145}
+        m_TargetAssemblyTypeName: FullInventoryUIController, Assembly-CSharp
+        m_MethodName: OnToggleInventory
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 8ced9d98-7323-4cf4-95da-1dbb60a894d0
+    m_ActionName: 'Player/ToggleInventory[/Keyboard/e]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Keyboard&Mouse
   m_DefaultActionMap: Player
@@ -9208,7 +9240,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3dba17ed9686252438860e12b5ade6b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InventoryManager
-  inventorySize: 5
+  inventorySize: 20
+  playerMovement: {fileID: 1489660676}
 --- !u!4 &1624749521
 Transform:
   m_ObjectHideFlags: 0
