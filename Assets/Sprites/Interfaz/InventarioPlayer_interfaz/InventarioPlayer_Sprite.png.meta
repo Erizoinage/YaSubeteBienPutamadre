@@ -152,9 +152,9 @@ TextureImporter:
       name: InventarioPlayer_Sprite_0
       rect:
         serializedVersion: 2
-        x: 89
+        x: 78
         y: 0
-        width: 1652
+        width: 1663
         height: 1053
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -262,10 +262,10 @@ TextureImporter:
       name: InventarioPlayer_Sprite_5
       rect:
         serializedVersion: 2
-        x: 759
-        y: 9
-        width: 212
-        height: 212
+        x: 741
+        y: 0
+        width: 688
+        height: 225
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}

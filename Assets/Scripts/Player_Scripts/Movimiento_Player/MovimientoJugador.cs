@@ -129,7 +129,20 @@ public class MovimientoJugador : MonoBehaviour
     {
         if (context.performed)
         {
-            FindAnyObjectByType<InventoryManager>();
+            InventoryManager inventoryManager =
+                FindAnyObjectByType<InventoryManager>();
+
+            if (inventoryManager == null)
+            {
+                Debug.LogWarning(
+                    "No se encontró un InventoryManager en la escena.",
+                    this
+                );
+
+                return;
+            }
+
+            inventoryManager.CambiarEstadoInventario();
         }
     }
 }

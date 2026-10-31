@@ -16,6 +16,6 @@ MonoBehaviour:
   descripcion: 'minipocion
 
 '
-  icono: {fileID: -2115971300322011778, guid: 253815d7fdc1a2241be3c2f396c49b35, type: 3}
+  icono: {fileID: 4483504832982471387, guid: 23c5e77f66b06ae49a31509d6a3ff574, type: 3}
   esStackeable: 1
-  cantidadMaxima: 1
+  cantidadMaxima: 5

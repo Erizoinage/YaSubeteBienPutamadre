@@ -16,16 +16,27 @@ public class ObjetoRecolectable : MonoBehaviour
 
     private void Awake()
     {
-        // Busca el inventario automáticamente si no fue asignado.
+        // Busca automáticamente el inventario si no fue asignado.
         if (inventoryManager == null)
         {
-            inventoryManager = FindFirstObjectByType<InventoryManager>();
+            inventoryManager = FindAnyObjectByType<InventoryManager>();
         }
     }
 
-    public void Recolectar()
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        // Evita recoger el mismo objeto dos veces.
+        // Solo se recoge si el objeto que entró tiene la etiqueta Player.
+        if (!collision.CompareTag("Player"))
+        {
+            return;
+        }
+
+        Recolectar();
+    }
+
+    private void Recolectar()
+    {
+        // Evita que el objeto se recolecte más de una vez.
         if (recogido)
         {
             return;
@@ -54,7 +65,7 @@ public class ObjetoRecolectable : MonoBehaviour
             cantidad
         );
 
-        // Solo elimina el objeto si se guardó correctamente.
+        // Solo destruye el objeto si el inventario lo recibió.
         if (agregado)
         {
             recogido = true;
@@ -76,7 +87,7 @@ public class ObjetoRecolectable : MonoBehaviour
             cantidad = 1;
         }
 
-        // Un objeto no stackeable solo puede recogerse de uno en uno.
+        // Los objetos no stackeables se recogen de uno en uno.
         if (datosObjeto != null && !datosObjeto.esStackeable)
         {
             cantidad = 1;
