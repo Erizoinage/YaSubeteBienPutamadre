@@ -6,7 +6,7 @@ public enum TipoEquipamiento
     Pechera
 }
 
-[CreateAssetMenu(fileName = "NuevoEquipable",menuName = "Inventario/Objeto Equipable")]
+
 public class DatosEquipable : DatosObjeto_Base
 {
     [Header("Tipo de equipamiento")]
