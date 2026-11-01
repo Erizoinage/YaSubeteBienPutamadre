@@ -22,6 +22,7 @@ public class SlotInventarioVisual :MonoBehaviour,IBeginDragHandler,IDragHandler,
 
     private GameObject iconoArrastrado;
     private RectTransform rectIconoArrastrado;
+    private bool soltadoSobreSlot;
 
     public SlotInventario Slot => slot;
 
@@ -111,6 +112,7 @@ public class SlotInventarioVisual :MonoBehaviour,IBeginDragHandler,IDragHandler,
             return;
         }
 
+        soltadoSobreSlot = false;
         CrearIconoArrastrado();
 
         imagenIcono.color = new Color(1f, 1f,1f,0.4f);
@@ -133,8 +135,12 @@ public class SlotInventarioVisual :MonoBehaviour,IBeginDragHandler,IDragHandler,
             imagenIcono.color = Color.white;
         }
 
-        DestruirIconoArrastrado();
+        if (!soltadoSobreSlot && inventoryManager != null)
+        {
+            inventoryManager.SoltarObjetoEnEscenario(slot);
+        }
 
+        DestruirIconoArrastrado();
     }
 
     public void OnDrop(PointerEventData eventData)
@@ -146,7 +152,14 @@ public class SlotInventarioVisual :MonoBehaviour,IBeginDragHandler,IDragHandler,
 
         SlotInventarioVisual slotOrigen =eventData.pointerDrag.GetComponent<SlotInventarioVisual>();
 
-        if (slotOrigen == null || slotOrigen == this)
+        if (slotOrigen == null)
+        {
+            return;
+        }
+
+        slotOrigen.soltadoSobreSlot = true;
+
+        if (slotOrigen == this)
         {
             return;
         }

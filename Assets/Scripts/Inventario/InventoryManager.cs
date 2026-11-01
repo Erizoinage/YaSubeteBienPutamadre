@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -11,6 +10,13 @@ public class InventoryManager : MonoBehaviour
 
     [Header("Jugador")]
     [SerializeField] private MovimientoJugador jugador;
+
+    [SerializeField] private InteraccionJugador interaccionJugador;
+
+    [SerializeField, Min(0.1f)] private float margenAlSoltarObjeto = 1.5f;
+
+    [Header("Vista previa")]
+    [SerializeField] private VisualEquipamiento visualEquipamientoPreview;
 
     [Header("Slots Normales")]
     [Min(1)]
@@ -44,6 +50,8 @@ public class InventoryManager : MonoBehaviour
         {
             inventoryPanel.SetActive(false);
         }
+
+        ActualizarEquipamientoVisual();
     }
 
     private void PrepararSlots()
@@ -297,6 +305,7 @@ public class InventoryManager : MonoBehaviour
 
         
         ActualizarSlotsVisuales();
+        ActualizarEquipamientoVisual();
         MostrarInventarioEnConsola();
 
         return cantidadRestante == 0;
@@ -359,9 +368,43 @@ public class InventoryManager : MonoBehaviour
                 indice++;
                 continue;
             }
-
             Debug.Log("Slot " + indice + ": " +slot.Objeto.nombreObjeto +" x" + slot.Cantidad );
             indice++;
+        }
+    }
+
+    private void ActualizarEquipamientoVisual()
+    {
+        DatosEquipable casco = null;
+        DatosEquipable armadura = null;
+
+        foreach (SlotEspecial slot in slotEspeciales)
+        {
+            if (slot == null || slot.EstaVacio() || !(slot.Objeto is DatosEquipable equipamiento))
+            {
+                continue;
+            }
+
+            switch (equipamiento.tipoEquipamiento)
+            {
+                case TipoEquipamiento.Casco:
+                    casco = equipamiento;
+                    break;
+
+                case TipoEquipamiento.Pechera:
+                    armadura = equipamiento;
+                    break;
+            }
+        }
+
+        if (jugador != null)
+        {
+            jugador.EstablecerEquipamientoVisual(casco, armadura);
+        }
+
+        if (visualEquipamientoPreview != null)
+        {
+            visualEquipamientoPreview.EstablecerEquipamiento(casco, armadura);
         }
     }
 
@@ -389,8 +432,79 @@ public class InventoryManager : MonoBehaviour
     if (objetoMovido)
     {
         ActualizarSlotsVisuales();
+        ActualizarEquipamientoVisual();
     }
 
     return objetoMovido;
 }
+
+    public bool SoltarObjetoEnEscenario(SlotInventario slot)
+    {
+        if (slot == null || slot.EstaVacio())
+        {
+            return false;
+        }
+
+        if (jugador == null || interaccionJugador == null)
+        {
+            Debug.LogWarning(
+                "Asigna el jugador y su InteraccionJugador para soltar objetos en el escenario.",
+                this
+            );
+            return false;
+        }
+
+        DatosObjeto_Base objeto = slot.Objeto;
+        int cantidad = slot.Cantidad;
+
+        if (objeto.icono == null)
+        {
+            Debug.LogWarning(
+                objeto.nombreObjeto + " no tiene un icono para mostrarlo en el escenario.",
+                objeto
+            );
+            return false;
+        }
+
+        Vector2 direccion = jugador.UltimaDireccion.normalized;
+        float distanciaSoltar = interaccionJugador.DistanciaInteraccion +
+                                margenAlSoltarObjeto;
+        Vector3 posicionMundo = jugador.transform.position +
+                                (Vector3)(direccion * distanciaSoltar);
+
+        GameObject objetoEscenario = new GameObject("Objeto - " + objeto.nombreObjeto);
+        objetoEscenario.transform.position = posicionMundo;
+
+        SpriteRenderer rendererObjeto = objetoEscenario.AddComponent<SpriteRenderer>();
+        rendererObjeto.sprite = objeto.icono;
+
+        SpriteRenderer rendererJugador = jugador.GetComponent<SpriteRenderer>();
+        if (rendererJugador != null)
+        {
+            rendererObjeto.sortingLayerID = rendererJugador.sortingLayerID;
+            rendererObjeto.sortingOrder = rendererJugador.sortingOrder;
+            rendererObjeto.sharedMaterial = rendererJugador.sharedMaterial;
+        }
+
+        BoxCollider2D colliderObjeto = objetoEscenario.AddComponent<BoxCollider2D>();
+        colliderObjeto.isTrigger = true;
+        colliderObjeto.size = new Vector2(
+            Mathf.Max(objeto.icono.bounds.size.x, 0.2f),
+            Mathf.Max(objeto.icono.bounds.size.y, 0.2f)
+        );
+
+        ObjetoRecolectable recolectable =
+            objetoEscenario.AddComponent<ObjetoRecolectable>();
+
+        if (!recolectable.Configurar(objeto, cantidad, this))
+        {
+            Destroy(objetoEscenario);
+            return false;
+        }
+
+        slot.VaciarSlot();
+        ActualizarSlotsVisuales();
+        ActualizarEquipamientoVisual();
+        return true;
+    }
 }

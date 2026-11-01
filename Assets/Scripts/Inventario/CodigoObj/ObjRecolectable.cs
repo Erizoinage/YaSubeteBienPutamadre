@@ -23,6 +23,25 @@ public class ObjetoRecolectable : MonoBehaviour
         }
     }
 
+    public bool Configurar(
+        DatosObjeto_Base nuevoObjeto,
+        int nuevaCantidad,
+        InventoryManager nuevoInventoryManager
+    )
+    {
+        if (nuevoObjeto == null || nuevaCantidad <= 0 || nuevoInventoryManager == null)
+        {
+            Debug.LogWarning("No se pudo configurar el objeto recolectable.", this);
+            return false;
+        }
+
+        datosObjeto = nuevoObjeto;
+        cantidad = nuevoObjeto.esStackeable ? nuevaCantidad : 1;
+        inventoryManager = nuevoInventoryManager;
+        recogido = false;
+        return true;
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         // Solo se recoge si el objeto que entró tiene la etiqueta Player.

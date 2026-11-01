@@ -16,12 +16,39 @@ public class SlotEspecial : SlotInventario
 
     public override bool PuedeGuardar(DatosObjeto_Base nuevoObjeto)
     {
-        if (nuevoObjeto == null || !PuedeGuardarEtiqueta(nuevoObjeto))
+        if (nuevoObjeto == null ||
+            !TipoEquipamientoCoincideEtiqueta(nuevoObjeto) ||
+            !PuedeGuardarEtiqueta(nuevoObjeto))
         {
             return false;
         }
 
         return base.PuedeGuardar(nuevoObjeto);
+    }
+
+    private bool TipoEquipamientoCoincideEtiqueta(DatosObjeto_Base nuevoObjeto)
+    {
+        if (!(nuevoObjeto is DatosEquipable equipamiento))
+        {
+            return true;
+        }
+
+        TipoDeObjeto etiquetaRequerida;
+        switch (equipamiento.tipoEquipamiento)
+        {
+            case TipoEquipamiento.Casco:
+                etiquetaRequerida = TipoDeObjeto.Casco;
+                break;
+
+            case TipoEquipamiento.Pechera:
+                etiquetaRequerida = TipoDeObjeto.Armadura;
+                break;
+
+            default:
+                return false;
+        }
+
+        return nuevoObjeto.TieneEtiqueta(etiquetaRequerida);
     }
 
     private bool PuedeGuardarEtiqueta(DatosObjeto_Base nuevoObjeto)

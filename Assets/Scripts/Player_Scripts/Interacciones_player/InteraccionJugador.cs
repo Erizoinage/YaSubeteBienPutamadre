@@ -12,6 +12,7 @@ public class InteraccionJugador : MonoBehaviour
     [SerializeField] private float distanciaInteraccion = 0.6f;
 
     private bool interaccionActiva;
+    public float DistanciaInteraccion => distanciaInteraccion;
 
     private void Start()
     {

@@ -7,6 +7,9 @@ public class MovimientoJugador : MonoBehaviour
     [Header("Configuración de movimiento")]
     [SerializeField] private float velocidad = 5f;
 
+    [Header("Equipamiento visual")]
+    [SerializeField] private VisualEquipamiento visualEquipamiento;
+
     private Rigidbody2D rb;
     private Animator animator;
 
@@ -22,6 +25,11 @@ public class MovimientoJugador : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+
+        if (visualEquipamiento == null)
+        {
+            visualEquipamiento = GetComponent<VisualEquipamiento>();
+        }
     }
 
     private void Start()
@@ -54,7 +62,7 @@ public class MovimientoJugador : MonoBehaviour
             float movimientoX = Mathf.Abs(movimiento.x);
             float movimientoY = Mathf.Abs(movimiento.y);
 
-            if (movimientoX > movimientoY)
+            if (movimientoX >= movimientoY && movimientoX > UmbralInput)
             {
                 ultimaDireccion = new Vector2(
                     Mathf.Sign(movimiento.x),
@@ -72,6 +80,7 @@ public class MovimientoJugador : MonoBehaviour
 
         ActualizarAnimaciones(seMueve);
         ActualizarDireccionVisual();
+        ActualizarDireccionEquipamiento();
     }
 
     private void ActualizarAnimaciones(bool seMueve)
@@ -125,6 +134,25 @@ public class MovimientoJugador : MonoBehaviour
         return movimientoActivo;
     }
 
+    public void EstablecerEquipamientoVisual(
+        DatosEquipable casco,
+        DatosEquipable armadura
+    )
+    {
+        if (visualEquipamiento == null)
+        {
+            visualEquipamiento = GetComponent<VisualEquipamiento>();
+        }
+
+        if (visualEquipamiento == null)
+        {
+            Debug.LogWarning("El jugador no tiene VisualEquipamiento configurado.", this);
+            return;
+        }
+
+        visualEquipamiento.EstablecerEquipamiento(casco, armadura);
+    }
+
     public void OnInventory(InputAction.CallbackContext context)
     {
         if (context.performed)
@@ -144,5 +172,28 @@ public class MovimientoJugador : MonoBehaviour
 
             inventoryManager.CambiarEstadoInventario();
         }
+    }
+
+    private void ActualizarDireccionEquipamiento()
+    {
+        if (visualEquipamiento == null)
+        {
+            return;
+        }
+
+        DireccionJugador direccion = DireccionJugador.Abajo;
+
+        if (ultimaDireccion.x != 0)
+        {
+            direccion = ultimaDireccion.x > 0
+                ? DireccionJugador.Derecha
+                : DireccionJugador.Izquierda;
+        }
+        else if (ultimaDireccion.y > 0)
+        {
+            direccion = DireccionJugador.Arriba;
+        }
+
+        visualEquipamiento.CambiarDireccion(direccion);
     }
 }
