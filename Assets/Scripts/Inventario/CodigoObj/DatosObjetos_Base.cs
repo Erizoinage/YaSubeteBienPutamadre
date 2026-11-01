@@ -1,13 +1,32 @@
 using UnityEngine;
 
-[CreateAssetMenu(
-    fileName = "NuevoObjeto",
-    menuName = "Inventario/Objeto"
-)]
-public class DatosObjeto : ScriptableObject
+
+public enum TipoDeObjeto
+{
+    Consumible,
+    Arma,
+    Casco,
+    Armadura,
+    Material,
+    ObjClave,
+    Echizo,
+    Amuleto,
+    Posion
+
+}
+
+[CreateAssetMenu(fileName = "NuevoObjeto",menuName = "Inventario/Objeto")]
+public class DatosObjeto_Base : ScriptableObject
 {
     [Header("Informacion")]
     public string nombreObjeto;
+
+    [Header("Tipo de Objeto")]
+    public TipoDeObjeto etiqueta;
+    public bool TieneEtiqueta(TipoDeObjeto etiquetaBuscada)
+    {
+        return etiqueta == etiquetaBuscada;
+    }
 
     [TextArea]
     public string descripcion;

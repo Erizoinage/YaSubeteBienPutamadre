@@ -3,7 +3,7 @@ using UnityEngine;
 public class ObjetoRecolectable : MonoBehaviour
 {
     [Header("Datos del objeto")]
-    [SerializeField] private DatosObjeto datosObjeto;
+    [SerializeField] private DatosObjeto_Base datosObjeto;
 
     [Header("Cantidad")]
     [Min(1)]
@@ -45,7 +45,7 @@ public class ObjetoRecolectable : MonoBehaviour
         if (datosObjeto == null)
         {
             Debug.LogWarning(
-                gameObject.name + " no tiene DatosObjeto asignado."
+                gameObject.name + " no tiene DatosObjeto_Base asignado."
             );
 
             return;
@@ -60,21 +60,13 @@ public class ObjetoRecolectable : MonoBehaviour
             return;
         }
 
-        bool agregado = inventoryManager.AgregarObjeto(
-            datosObjeto,
-            cantidad
-        );
+        bool agregado = inventoryManager.AgregarObjeto(datosObjeto,cantidad);
 
-        // Solo destruye el objeto si el inventario lo recibió.
         if (agregado)
         {
             recogido = true;
 
-            Debug.Log(
-                "Se recogió " +
-                cantidad + " x " +
-                datosObjeto.nombreObjeto
-            );
+            Debug.Log("Se recogió " + cantidad + " x " +datosObjeto.nombreObjeto);
 
             Destroy(gameObject);
         }

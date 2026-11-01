@@ -1,0 +1,561 @@
+fileFormatVersion: 2
+guid: 549bbcc0515749d40b955d5be1fc2d9f
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -4509385288770122981
+    second: sprites de cosas_0
+  - first:
+      213: -1180257196230004930
+    second: sprites de cosas_1
+  - first:
+      213: -7655461808958719020
+    second: sprites de cosas_2
+  - first:
+      213: 2463107648206628033
+    second: sprites de cosas_3
+  - first:
+      213: 2144620571975251255
+    second: sprites de cosas_4
+  - first:
+      213: -2762874589116255767
+    second: sprites de cosas_5
+  - first:
+      213: -8301944022154198740
+    second: sprites de cosas_6
+  - first:
+      213: -5189455304937029832
+    second: sprites de cosas_7
+  - first:
+      213: -6743257503950810325
+    second: sprites de cosas_8
+  - first:
+      213: 3934250377918263907
+    second: sprites de cosas_9
+  - first:
+      213: 6142317755570310451
+    second: sprites de cosas_10
+  - first:
+      213: -6723589605538872604
+    second: sprites de cosas_11
+  - first:
+      213: -773777900661345773
+    second: sprites de cosas_12
+  - first:
+      213: -2389332299667888141
+    second: sprites de cosas_13
+  - first:
+      213: -5595205061292858259
+    second: sprites de cosas_14
+  - first:
+      213: -7321369779963126725
+    second: sprites de cosas_15
+  - first:
+      213: 8274842290888404791
+    second: sprites de cosas_16
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationMethod: 0
+  spriteTessellationDetail: -1
+  spriteGeometrySubdivision: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: sprites de cosas_0
+      rect:
+        serializedVersion: 2
+        x: 9
+        y: 259
+        width: 152
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b1b0c7bb8f17b61c0800000000000000
+      internalID: -4509385288770122981
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprites de cosas_1
+      rect:
+        serializedVersion: 2
+        x: 169
+        y: 259
+        width: 142
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e3fac135552ee9fe0800000000000000
+      internalID: -1180257196230004930
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprites de cosas_2
+      rect:
+        serializedVersion: 2
+        x: 319
+        y: 249
+        width: 142
+        height: 122
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4db327d8b0652c590800000000000000
+      internalID: -7655461808958719020
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprites de cosas_3
+      rect:
+        serializedVersion: 2
+        x: 479
+        y: 249
+        width: 142
+        height: 122
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1c467ee1b57be2220800000000000000
+      internalID: 2463107648206628033
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprites de cosas_4
+      rect:
+        serializedVersion: 2
+        x: 639
+        y: 219
+        width: 92
+        height: 152
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 735749a2c0933cd10800000000000000
+      internalID: 2144620571975251255
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprites de cosas_5
+      rect:
+        serializedVersion: 2
+        x: 739
+        y: 219
+        width: 142
+        height: 142
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9e1b5c4133c48a9d0800000000000000
+      internalID: -2762874589116255767
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprites de cosas_6
+      rect:
+        serializedVersion: 2
+        x: 889
+        y: 239
+        width: 162
+        height: 132
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c21425eb5e199cc80800000000000000
+      internalID: -8301944022154198740
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprites de cosas_7
+      rect:
+        serializedVersion: 2
+        x: 9
+        y: 129
+        width: 152
+        height: 102
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 83f367325e95bf7b0800000000000000
+      internalID: -5189455304937029832
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprites de cosas_8
+      rect:
+        serializedVersion: 2
+        x: 169
+        y: 129
+        width: 162
+        height: 82
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b23560807032b62a0800000000000000
+      internalID: -6743257503950810325
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprites de cosas_9
+      rect:
+        serializedVersion: 2
+        x: 349
+        y: 129
+        width: 162
+        height: 82
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 362b349cfd3499630800000000000000
+      internalID: 3934250377918263907
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprites de cosas_10
+      rect:
+        serializedVersion: 2
+        x: 519
+        y: 69
+        width: 142
+        height: 142
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 33dc75e8475ed3550800000000000000
+      internalID: 6142317755570310451
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprites de cosas_11
+      rect:
+        serializedVersion: 2
+        x: 689
+        y: 129
+        width: 122
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4e2c85a70e201b2a0800000000000000
+      internalID: -6723589605538872604
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprites de cosas_12
+      rect:
+        serializedVersion: 2
+        x: 879
+        y: 109
+        width: 182
+        height: 102
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3127808591df245f0800000000000000
+      internalID: -773777900661345773
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprites de cosas_13
+      rect:
+        serializedVersion: 2
+        x: 29
+        y: 59
+        width: 82
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3f7ade3cee267ded0800000000000000
+      internalID: -2389332299667888141
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprites de cosas_14
+      rect:
+        serializedVersion: 2
+        x: 119
+        y: 89
+        width: 102
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d64eb2434a6d952b0800000000000000
+      internalID: -5595205061292858259
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprites de cosas_15
+      rect:
+        serializedVersion: 2
+        x: 239
+        y: 59
+        width: 82
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b3c9404b9f4456a90800000000000000
+      internalID: -7321369779963126725
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprites de cosas_16
+      rect:
+        serializedVersion: 2
+        x: 329
+        y: 9
+        width: 92
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 73f68c8b83526d270800000000000000
+      internalID: 8274842290888404791
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      sprites de cosas_0: -4509385288770122981
+      sprites de cosas_1: -1180257196230004930
+      sprites de cosas_10: 6142317755570310451
+      sprites de cosas_11: -6723589605538872604
+      sprites de cosas_12: -773777900661345773
+      sprites de cosas_13: -2389332299667888141
+      sprites de cosas_14: -5595205061292858259
+      sprites de cosas_15: -7321369779963126725
+      sprites de cosas_16: 8274842290888404791
+      sprites de cosas_2: -7655461808958719020
+      sprites de cosas_3: 2463107648206628033
+      sprites de cosas_4: 2144620571975251255
+      sprites de cosas_5: -2762874589116255767
+      sprites de cosas_6: -8301944022154198740
+      sprites de cosas_7: -5189455304937029832
+      sprites de cosas_8: -6743257503950810325
+      sprites de cosas_9: 3934250377918263907
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

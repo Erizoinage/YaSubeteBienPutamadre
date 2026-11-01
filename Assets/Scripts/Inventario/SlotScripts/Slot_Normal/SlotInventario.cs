@@ -3,10 +3,10 @@ using UnityEngine;
 [System.Serializable]
 public class SlotInventario
 {
-    [SerializeField] private DatosObjeto objeto;
+    [SerializeField] private DatosObjeto_Base objeto;
     [SerializeField] private int cantidad;
 
-    public DatosObjeto Objeto => objeto;
+    public DatosObjeto_Base Objeto => objeto;
     public int Cantidad => cantidad;
 
     public bool EstaVacio()
@@ -14,28 +14,31 @@ public class SlotInventario
         return objeto == null;
     }
 
-    public bool TieneElMismoObjeto(DatosObjeto nuevoObjeto)
+    public bool TieneElMismoObjeto(DatosObjeto_Base nuevoObjeto)
     {
         return objeto == nuevoObjeto;
     }
 
-    public bool PuedeGuardar(DatosObjeto nuevoObjeto)
+    public virtual bool PuedeGuardar(DatosObjeto_Base nuevoObjeto)
     {
         if (nuevoObjeto == null)
         {
             return false;
         }
 
+        // Un slot vacío puede aceptar cualquier objeto.
         if (EstaVacio())
         {
             return true;
         }
 
+        // No permite mezclar objetos diferentes.
         if (!TieneElMismoObjeto(nuevoObjeto))
         {
             return false;
         }
 
+        // Un objeto no stackeable no puede acumularse.
         if (!objeto.esStackeable)
         {
             return false;
@@ -44,16 +47,15 @@ public class SlotInventario
         return cantidad < objeto.cantidadMaxima;
     }
 
-    public int AgregarObjeto(
-        DatosObjeto nuevoObjeto,
-        int cantidadRecibida
-    )
+    public virtual int AgregarObjeto(DatosObjeto_Base nuevoObjeto,int cantidadRecibida)
     {
         if (nuevoObjeto == null || cantidadRecibida <= 0)
         {
             return cantidadRecibida;
         }
 
+        // Si es un SlotEspecial, llamará automáticamente
+        // a la versión especial de PuedeGuardar().
         if (!PuedeGuardar(nuevoObjeto))
         {
             return cantidadRecibida;
@@ -73,7 +75,7 @@ public class SlotInventario
 
         int espacioDisponible =objeto.cantidadMaxima - cantidad;
 
-        int cantidadAgregada = Mathf.Min( cantidadRecibida,espacioDisponible);
+        int cantidadAgregada = Mathf.Min(cantidadRecibida,espacioDisponible);
 
         cantidad += cantidadAgregada;
 
@@ -82,7 +84,7 @@ public class SlotInventario
 
     public bool MoverA(SlotInventario slotDestino)
     {
-        if (slotDestino == null)
+        if (slotDestino == null || slotDestino == this)
         {
             return false;
         }
@@ -97,11 +99,23 @@ public class SlotInventario
             return false;
         }
 
-        slotDestino.objeto = objeto;
-        slotDestino.cantidad = cantidad;
+        // Comprueba las reglas del destino.
+        // Si es especial, comprobará su etiqueta.
+        if (!slotDestino.PuedeGuardar(objeto))
+        {
+            return false;
+        }
+
+        int cantidadSobrante = slotDestino.AgregarObjeto(objeto,cantidad);
+
+        // El movimiento solo se completa si cupo todo.
+        if (cantidadSobrante > 0)
+        {
+            slotDestino.VaciarSlot();
+            return false;
+        }
 
         VaciarSlot();
-
         return true;
     }
 

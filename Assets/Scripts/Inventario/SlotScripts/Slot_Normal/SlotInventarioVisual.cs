@@ -1,22 +1,24 @@
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class SlotInventarioVisual :
-    MonoBehaviour,
-    IBeginDragHandler,
-    IDragHandler,
-    IEndDragHandler,
-    IDropHandler
+public class SlotInventarioVisual :MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDragHandler,IDropHandler,IPointerEnterHandler,IPointerExitHandler
 {
     [Header("Elementos visuales")]
     [SerializeField] private Image imagenIcono;
     [SerializeField] private TMP_Text textoCantidad;
+    [SerializeField] private Color colorAlPasarCursor =
+        new Color(1f, 1f, 1f, 0.25f);
+    [SerializeField, Min(0f)] private float duracionTransicion = 0.2f;
 
     private SlotInventario slot;
     private InventoryManager inventoryManager;
     private Canvas canvas;
+    private Image imagenFondo;
+    private Color colorFondoOriginal;
+    private Coroutine transicionFondo;
 
     private GameObject iconoArrastrado;
     private RectTransform rectIconoArrastrado;
@@ -26,6 +28,13 @@ public class SlotInventarioVisual :
     private void Awake()
     {
         canvas = GetComponentInParent<Canvas>();
+        imagenFondo = GetComponent<Image>();
+
+        if (imagenFondo != null)
+        {
+            colorFondoOriginal = imagenFondo.color;
+            imagenFondo.raycastTarget = true;
+        }
 
         if (imagenIcono != null)
         {
@@ -77,6 +86,19 @@ public class SlotInventarioVisual :
         }
     }
 
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        if (imagenFondo != null)
+        {
+            TransicionarColorFondo(colorAlPasarCursor);
+        }
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        RestaurarColorFondo();
+    }
+
     public void OnBeginDrag(PointerEventData eventData)
     {
         if (slot == null || slot.EstaVacio())
@@ -122,8 +144,7 @@ public class SlotInventarioVisual :
             return;
         }
 
-        SlotInventarioVisual slotOrigen =
-            eventData.pointerDrag.GetComponent<SlotInventarioVisual>();
+        SlotInventarioVisual slotOrigen =eventData.pointerDrag.GetComponent<SlotInventarioVisual>();
 
         if (slotOrigen == null || slotOrigen == this)
         {
@@ -196,5 +217,48 @@ public class SlotInventarioVisual :
             textoCantidad.text = "";
             textoCantidad.gameObject.SetActive(false);
         }
+    }
+
+    private void RestaurarColorFondo()
+    {
+        if (imagenFondo != null)
+        {
+            TransicionarColorFondo(colorFondoOriginal);
+        }
+    }
+
+    private void TransicionarColorFondo(Color colorDestino)
+    {
+        if (transicionFondo != null)
+        {
+            StopCoroutine(transicionFondo);
+        }
+
+        if (duracionTransicion <= 0f)
+        {
+            imagenFondo.color = colorDestino;
+            transicionFondo = null;
+            return;
+        }
+
+        transicionFondo = StartCoroutine(
+            AnimarColorFondo(imagenFondo.color, colorDestino)
+        );
+    }
+
+    private IEnumerator AnimarColorFondo(Color colorInicial, Color colorDestino)
+    {
+        float tiempoTranscurrido = 0f;
+
+        while (tiempoTranscurrido < duracionTransicion)
+        {
+            tiempoTranscurrido += Time.unscaledDeltaTime;
+            float progreso = Mathf.Clamp01(tiempoTranscurrido / duracionTransicion);
+            imagenFondo.color = Color.Lerp(colorInicial, colorDestino, progreso);
+            yield return null;
+        }
+
+        imagenFondo.color = colorDestino;
+        transicionFondo = null;
     }
 }

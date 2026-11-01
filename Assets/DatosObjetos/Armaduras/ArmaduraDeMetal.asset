@@ -10,12 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: eb5b870faa5757d4fa0e5b6628a206aa, type: 3}
-  m_Name: MiniPocion
-  m_EditorClassIdentifier: Assembly-CSharp::DatosObjeto
-  nombreObjeto: miniPocion
-  descripcion: 'minipocion
-
-'
-  icono: {fileID: 4483504832982471387, guid: 23c5e77f66b06ae49a31509d6a3ff574, type: 3}
-  esStackeable: 1
-  cantidadMaxima: 5
+  m_Name: ArmaduraDeMetal
+  m_EditorClassIdentifier: Assembly-CSharp::DatosObjeto_Base
+  nombreObjeto: Armadura de metal
+  etiqueta: 3
+  descripcion: 
+  icono: {fileID: -773777900661345773, guid: 549bbcc0515749d40b955d5be1fc2d9f, type: 3}
+  esStackeable: 0
+  cantidadMaxima: 1

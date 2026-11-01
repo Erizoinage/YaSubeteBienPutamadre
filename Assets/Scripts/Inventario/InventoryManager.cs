@@ -12,7 +12,7 @@ public class InventoryManager : MonoBehaviour
     [Header("Jugador")]
     [SerializeField] private MovimientoJugador jugador;
 
-    [Header("Slots")]
+    [Header("Slots Normales")]
     [Min(1)]
     [SerializeField] private int cantidadSlots = 16;
     [SerializeField] private List<SlotInventario> slots = new List<SlotInventario>();
@@ -20,13 +20,15 @@ public class InventoryManager : MonoBehaviour
     public List<SlotInventario> Slots => slots;
     public bool InventarioAbierto => inventarioAbierto;
 
+    [Header("Slots Especiales")]
+    [SerializeField] private List<SlotEspecial> slotEspeciales = new List<SlotEspecial>();
+
     [Header("Lo visual")]
 
     [SerializeField] private Transform contenedorSlots;
     [SerializeField] private SlotInventarioVisual prefabSlotVisual;
 
     private readonly List<SlotInventarioVisual> slotsVisuales = new List<SlotInventarioVisual>();
-
 
     private void Awake()
     {
@@ -112,39 +114,109 @@ public class InventoryManager : MonoBehaviour
         }
 
         slotsVisuales.Clear();
-        slotsVisuales.AddRange(
+        List<SlotInventarioVisual> visualesLibres = new List<SlotInventarioVisual>(
             contenedorSlots.GetComponentsInChildren<SlotInventarioVisual>(true)
         );
+        HashSet<SlotInventarioVisual> visualesReservados = new HashSet<SlotInventarioVisual>();
+        HashSet<SlotInventarioVisual> visualesAsignados = new HashSet<SlotInventarioVisual>();
 
-        if (slotsVisuales.Count < slots.Count &&
-            prefabSlotVisual != null &&
-            contenedorSlots.GetComponent<LayoutGroup>() != null)
+        foreach (SlotEspecial slotEspecial in slotEspeciales)
         {
-            while (slotsVisuales.Count < slots.Count)
+            if (slotEspecial != null && slotEspecial.VisualSlot != null)
             {
-                SlotInventarioVisual nuevoSlotVisual =
-                    Instantiate(prefabSlotVisual, contenedorSlots);
-
-                slotsVisuales.Add(nuevoSlotVisual);
+                visualesReservados.Add(slotEspecial.VisualSlot);
             }
         }
 
-        if (slotsVisuales.Count < slots.Count)
+        visualesLibres.RemoveAll(visual => visualesReservados.Contains(visual));
+
+        for (int i = 0; i < slots.Count; i++)
         {
-            Debug.LogWarning(
-                "Hay " + slotsVisuales.Count + " slots visuales colocados, pero el inventario necesita "
-                + slots.Count + ". Coloca los slots faltantes en el contenedor.",
-                this
-            );
+            SlotInventarioVisual visual = ObtenerVisualDisponible(visualesLibres);
+            if (visual == null)
+            {
+                visual = CrearSlotVisual();
+            }
+
+            if (visual == null)
+            {
+                Debug.LogWarning("No hay un slot visual disponible para el slot normal " + i + ".", this);
+                continue;
+            }
+
+            AsignarSlotVisual(visual, slots[i], visualesAsignados);
         }
 
-        int cantidadSlotsVisuales = Mathf.Min(slotsVisuales.Count, slots.Count);
-
-        for (int i = 0; i < cantidadSlotsVisuales; i++)
+        for (int i = 0; i < slotEspeciales.Count; i++)
         {
-            slotsVisuales[i].AsignarSlot(slots[i]);
-            slotsVisuales[i].AsignarInventoryManager(this);
+            SlotEspecial slotEspecial = slotEspeciales[i];
+            if (slotEspecial == null)
+            {
+                Debug.LogWarning("El slot especial " + i + " no está asignado.", this);
+                continue;
+            }
+
+            SlotInventarioVisual visual = slotEspecial.VisualSlot;
+            if (visual == null)
+            {
+                visual = ObtenerVisualDisponible(visualesLibres);
+                if (visual == null)
+                {
+                    visual = CrearSlotVisual();
+                }
+            }
+
+            if (visual == null)
+            {
+                Debug.LogWarning(
+                    "Asigna un slot visual a la entrada " + i + " de Slots Especiales, " +
+                    "o agrega un slot visual al contenedor.",
+                    this
+                );
+                continue;
+            }
+
+            AsignarSlotVisual(visual, slotEspecial, visualesAsignados);
         }
+    }
+
+    private SlotInventarioVisual ObtenerVisualDisponible(List<SlotInventarioVisual> visualesLibres)
+    {
+        if (visualesLibres.Count == 0)
+        {
+            return null;
+        }
+
+        SlotInventarioVisual visual = visualesLibres[0];
+        visualesLibres.RemoveAt(0);
+        return visual;
+    }
+
+    private SlotInventarioVisual CrearSlotVisual()
+    {
+        if (prefabSlotVisual == null || contenedorSlots.GetComponent<LayoutGroup>() == null)
+        {
+            return null;
+        }
+
+        return Instantiate(prefabSlotVisual, contenedorSlots);
+    }
+
+    private void AsignarSlotVisual(
+        SlotInventarioVisual visual,
+        SlotInventario slot,
+        HashSet<SlotInventarioVisual> visualesAsignados
+    )
+    {
+        if (!visualesAsignados.Add(visual))
+        {
+            Debug.LogWarning("Un slot visual está asignado a más de un slot de inventario.", visual);
+            return;
+        }
+
+        visual.AsignarSlot(slot);
+        visual.AsignarInventoryManager(this);
+        slotsVisuales.Add(visual);
     }
 
     private void ActualizarSlotsVisuales()
@@ -155,11 +227,11 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
-    public bool AgregarObjeto(DatosObjeto nuevoObjeto, int cantidadRecibida)
+    public bool AgregarObjeto(DatosObjeto_Base nuevoObjeto, int cantidadRecibida)
     {
         if (nuevoObjeto == null)
         {
-            Debug.LogWarning("No se puede agregar un DatosObjeto vacío.");
+            Debug.LogWarning("No se puede agregar un DatosObjeto_Base vacío.");
 
             return false;
         }
@@ -185,7 +257,7 @@ public class InventoryManager : MonoBehaviour
         // Primero llena los stacks existentes.
         if (nuevoObjeto.esStackeable)
         {
-            foreach (SlotInventario slot in slots)
+            foreach (SlotInventario slot in ObtenerTodosLosSlots())
             {
                 if (cantidadRestante <= 0)
                 {
@@ -206,8 +278,7 @@ public class InventoryManager : MonoBehaviour
             }
         }
 
-        // Después utiliza slots vacíos.
-        foreach (SlotInventario slot in slots)
+        foreach (SlotInventario slot in ObtenerTodosLosSlots())
         {
             if (cantidadRestante <= 0)
             {
@@ -231,13 +302,13 @@ public class InventoryManager : MonoBehaviour
         return cantidadRestante == 0;
     }
 
-    private bool HayEspacioPara(DatosObjeto nuevoObjeto,int cantidadRecibida)
+    private bool HayEspacioPara(DatosObjeto_Base nuevoObjeto,int cantidadRecibida)
     {
         int espacioDisponible = 0;
 
-        foreach (SlotInventario slot in slots)
+        foreach (SlotInventario slot in ObtenerTodosLosSlots())
         {
-            if (slot.EstaVacio())
+            if (slot.EstaVacio() && slot.PuedeGuardar(nuevoObjeto))
             {
                 if (nuevoObjeto.esStackeable)
                 {
@@ -248,7 +319,9 @@ public class InventoryManager : MonoBehaviour
                     espacioDisponible += 1;
                 }
             }
-            else if ( nuevoObjeto.esStackeable && slot.TieneElMismoObjeto(nuevoObjeto))
+            else if (nuevoObjeto.esStackeable &&
+                     slot.TieneElMismoObjeto(nuevoObjeto) &&
+                     slot.PuedeGuardar(nuevoObjeto))
             {
                 espacioDisponible +=nuevoObjeto.cantidadMaxima - slot.Cantidad;
             }
@@ -262,19 +335,33 @@ public class InventoryManager : MonoBehaviour
         return false;
     }
 
+    private IEnumerable<SlotInventario> ObtenerTodosLosSlots()
+    {
+        foreach (SlotInventario slot in slots)
+        {
+            yield return slot;
+        }
+
+        foreach (SlotEspecial slot in slotEspeciales)
+        {
+            yield return slot;
+        }
+    }
+
     private void MostrarInventarioEnConsola()
     {
-        for (int i = 0; i < slots.Count; i++)
+        int indice = 0;
+        foreach (SlotInventario slot in ObtenerTodosLosSlots())
         {
-            SlotInventario slot = slots[i];
-
             if (slot.EstaVacio())
             {
-                Debug.Log("Slot " + i + ": vacío");
+                Debug.Log("Slot " + indice + ": vacío");
+                indice++;
                 continue;
             }
 
-            Debug.Log("Slot " + i + ": " +slot.Objeto.nombreObjeto +" x" + slot.Cantidad );
+            Debug.Log("Slot " + indice + ": " +slot.Objeto.nombreObjeto +" x" + slot.Cantidad );
+            indice++;
         }
     }
 
@@ -285,25 +372,25 @@ public class InventoryManager : MonoBehaviour
             cantidadSlots = 1;
         }
     }
-    public bool MoverObjeto(SlotInventario slotOrigen, SlotInventario slotDestino)
+    public bool MoverObjeto( SlotInventario slotOrigen,SlotInventario slotDestino)
+{
+    if (slotOrigen == null || slotDestino == null)
     {
-     if (slotOrigen == null || slotDestino == null)
-      {
         return false;
-      }
-
-     if (slotOrigen == slotDestino)
-      {
-        return false;
-      }
-
-     bool objetoMovido = slotOrigen.MoverA(slotDestino);
-
-      if (objetoMovido)
-       {
-        ActualizarSlotsVisuales();
-       }
-
-     return objetoMovido;
     }
+
+    if (slotOrigen == slotDestino)
+    {
+        return false;
+    }
+
+    bool objetoMovido = slotOrigen.MoverA(slotDestino);
+
+    if (objetoMovido)
+    {
+        ActualizarSlotsVisuales();
+    }
+
+    return objetoMovido;
+}
 }
