@@ -16,6 +16,6 @@ MonoBehaviour:
   descripcion: 
   ataqueExtra: 0
   defensaExtra: 0
-  vidaMaximaExtra: 0
+  vidaMaximaExtra: 50
   energiaMaximaExtra: 0
   velocidadExtra: 0
