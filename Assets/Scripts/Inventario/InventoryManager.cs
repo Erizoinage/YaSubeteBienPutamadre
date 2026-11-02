@@ -24,6 +24,7 @@ public class InventoryManager : MonoBehaviour
     [SerializeField] private List<SlotInventario> slots = new List<SlotInventario>();
     private bool inventarioAbierto;
     public List<SlotInventario> Slots => slots;
+    public IReadOnlyList<SlotEspecial> SlotsEspeciales => slotEspeciales;
     public bool InventarioAbierto => inventarioAbierto;
 
     [Header("Slots Especiales")]
@@ -506,5 +507,11 @@ public class InventoryManager : MonoBehaviour
         ActualizarSlotsVisuales();
         ActualizarEquipamientoVisual();
         return true;
+    }
+
+    public void ActualizarInventarioDespuesDeCambio()
+    {
+        ActualizarSlotsVisuales();
+        ActualizarEquipamientoVisual();
     }
 }

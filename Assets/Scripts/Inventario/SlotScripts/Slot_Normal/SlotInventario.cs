@@ -54,8 +54,11 @@ public class SlotInventario
             return cantidadRecibida;
         }
 
-        // Si es un SlotEspecial, llamará automáticamente
-        // a la versión especial de PuedeGuardar().
+        /*
+         * Si este objeto es realmente un SlotEspecial,
+         * C# llamará a la versión sobrescrita de
+         * PuedeGuardar() y comprobará sus etiquetas.
+         */
         if (!PuedeGuardar(nuevoObjeto))
         {
             return cantidadRecibida;
@@ -67,19 +70,50 @@ public class SlotInventario
             cantidad = 0;
         }
 
+        // Los objetos no stackeables solo guardan una unidad.
         if (!objeto.esStackeable)
         {
             cantidad = 1;
             return cantidadRecibida - 1;
         }
 
-        int espacioDisponible =objeto.cantidadMaxima - cantidad;
+        int espacioDisponible =
+            objeto.cantidadMaxima - cantidad;
 
         int cantidadAgregada = Mathf.Min(cantidadRecibida,espacioDisponible);
 
         cantidad += cantidadAgregada;
 
+        // Devuelve la cantidad que no pudo almacenarse.
         return cantidadRecibida - cantidadAgregada;
+    }
+
+    public bool RetirarCantidad(int cantidadARetirar)
+    {
+        if (cantidadARetirar <= 0)
+        {
+            return false;
+        }
+
+        if (EstaVacio())
+        {
+            return false;
+        }
+
+        if (cantidad < cantidadARetirar)
+        {
+            return false;
+        }
+
+        cantidad -= cantidadARetirar;
+
+        // Si ya no queda ninguna unidad, limpia el slot.
+        if (cantidad <= 0)
+        {
+            VaciarSlot();
+        }
+
+        return true;
     }
 
     public bool MoverA(SlotInventario slotDestino)
@@ -94,13 +128,17 @@ public class SlotInventario
             return false;
         }
 
+        // Por ahora solo se mueve a slots vacíos.
         if (!slotDestino.EstaVacio())
         {
             return false;
         }
 
-        // Comprueba las reglas del destino.
-        // Si es especial, comprobará su etiqueta.
+        /*
+         * Comprueba las reglas del destino.
+         * Si el destino es SlotEspecial, también comprobará
+         * la etiqueta permitida y el tipo de equipamiento.
+         */
         if (!slotDestino.PuedeGuardar(objeto))
         {
             return false;
@@ -108,7 +146,10 @@ public class SlotInventario
 
         int cantidadSobrante = slotDestino.AgregarObjeto(objeto,cantidad);
 
-        // El movimiento solo se completa si cupo todo.
+        /*
+         * El movimiento solamente se completa si toda
+         * la cantidad pudo almacenarse.
+         */
         if (cantidadSobrante > 0)
         {
             slotDestino.VaciarSlot();

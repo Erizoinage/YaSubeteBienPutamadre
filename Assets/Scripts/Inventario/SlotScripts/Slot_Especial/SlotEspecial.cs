@@ -2,6 +2,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
+
+public enum FuncionSlotEspecial
+{
+    Equipamiento,
+    ConsumibleCombate,
+    AtaqueCombate
+}
+[System.Serializable]
 public class SlotEspecial : SlotInventario
 {
     [Header("Etiquetas permitidas")]
@@ -11,14 +19,22 @@ public class SlotEspecial : SlotInventario
     [Header("Representacion visual")]
     [SerializeField] private SlotInventarioVisual visualSlot;
 
+    [Header("Funcion del Slot")]
+
+    [SerializeField] private FuncionSlotEspecial funcion;
+    private FuncionSlotEspecial Funcion => funcion;
+
     public TipoDeObjeto EtiquetaPermitida => etiquetaPermitida;
     public SlotInventarioVisual VisualSlot => visualSlot;
 
+    public bool AceptaEtiqueta(TipoDeObjeto etiqueta)
+    {
+        return PuedeGuardarEtiqueta(etiqueta);
+    }
+
     public override bool PuedeGuardar(DatosObjeto_Base nuevoObjeto)
     {
-        if (nuevoObjeto == null ||
-            !TipoEquipamientoCoincideEtiqueta(nuevoObjeto) ||
-            !PuedeGuardarEtiqueta(nuevoObjeto))
+        if (nuevoObjeto == null ||!TipoEquipamientoCoincideEtiqueta(nuevoObjeto) ||!PuedeGuardarEtiqueta(nuevoObjeto))
         {
             return false;
         }
@@ -72,5 +88,32 @@ public class SlotEspecial : SlotInventario
         }
 
         return false;
+    }
+
+    private bool PuedeGuardarEtiqueta(TipoDeObjeto etiqueta)
+    {
+        if (etiquetaPermitida == etiqueta)
+        {
+            return true;
+        }
+
+        return etiquetasAdicionales != null && etiquetasAdicionales.Contains(etiqueta);
+    }
+    
+    public bool UtilizableEnCombate()
+    {
+        return funcion == FuncionSlotEspecial.ConsumibleCombate || funcion == FuncionSlotEspecial.AtaqueCombate;
+    }
+
+    public bool ConsumirCantidadEnCombate(int cantidadAConsumir)
+    {
+    if (!UtilizableEnCombate())
+       {
+         Debug.LogWarning("Este slot especial no se puede consumir en combate.");
+
+         return false;
+       }
+
+        return base.RetirarCantidad(cantidadAConsumir);
     }
 }
