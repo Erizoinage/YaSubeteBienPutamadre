@@ -4,28 +4,21 @@ using UnityEngine;
 public class EquipamientoCombateManager : MonoBehaviour
 {
     [Header("Inventario")]
-    [SerializeField]
-    private InventoryManager inventoryManager;
+    [SerializeField]private InventoryManager inventoryManager;
 
     [Header("Slots disponibles en combate")]
-    [SerializeField]
-    private List<SlotEspecial> slotsConsumibles =
-        new List<SlotEspecial>();
+    [SerializeField]private List<SlotEspecial> slotsConsumibles =new List<SlotEspecial>();
 
-    [SerializeField]
-    private List<SlotEspecial> slotsAtaques =
-        new List<SlotEspecial>();
+    [SerializeField]private List<SlotEspecial> slotsAtaques =new List<SlotEspecial>();
 
     private void Awake()
     {
         BuscarSlotsDeCombate();
     }
 
-    public IReadOnlyList<SlotEspecial> SlotsConsumibles =>
-        slotsConsumibles;
+    public IReadOnlyList<SlotEspecial> SlotsConsumibles =>slotsConsumibles;
 
-    public IReadOnlyList<SlotEspecial> SlotsAtaques =>
-        slotsAtaques;
+    public IReadOnlyList<SlotEspecial> SlotsAtaques =>slotsAtaques;
 
     public SlotEspecial ObtenerSlotConsumible(int indice)
     {
@@ -47,10 +40,7 @@ public class EquipamientoCombateManager : MonoBehaviour
         return slotsAtaques[indice];
     }
 
-    public bool ConsumirDesdeSlot(
-        SlotEspecial slot,
-        int cantidad
-    )
+    public bool ConsumirDesdeSlot(SlotEspecial slot,int cantidad)
     {
         if (slot == null || slot.EstaVacio())
         {
@@ -64,20 +54,14 @@ public class EquipamientoCombateManager : MonoBehaviour
 
         if (!EsSlotUtilizableEnCombate(slot))
         {
-            Debug.LogWarning(
-                "El slot indicado no puede utilizarse en combate.",
-                this
-            );
+            Debug.LogWarning("El slot indicado no puede utilizarse en combate.",this);
 
             return false;
         }
 
         if (slot.Objeto is DatosArma)
         {
-            Debug.LogWarning(
-                "Las armas no se consumen al utilizarse.",
-                this
-            );
+            Debug.LogWarning("Las armas no se consumen al utilizarse.",this);
 
             return false;
         }
@@ -93,9 +77,7 @@ public class EquipamientoCombateManager : MonoBehaviour
         return true;
     }
 
-    public DatosObjeto_Base ObtenerObjetoConsumible(
-        int indice
-    )
+    public DatosObjeto_Base ObtenerObjetoConsumible(int indice)
     {
         SlotEspecial slot = ObtenerSlotConsumible(indice);
 
@@ -140,36 +122,26 @@ public class EquipamientoCombateManager : MonoBehaviour
                 continue;
             }
 
-            if (slot.AceptaEtiqueta(TipoDeObjeto.Arma) ||
-                slot.AceptaEtiqueta(TipoDeObjeto.Echizo))
+            if (slot.AceptaEtiqueta(TipoDeObjeto.Arma) ||slot.AceptaEtiqueta(TipoDeObjeto.Echizo))
             {
                 slotsAtaques.Add(slot);
             }
 
-            if (slot.AceptaEtiqueta(TipoDeObjeto.Consumible) ||
-                slot.AceptaEtiqueta(TipoDeObjeto.Posion))
+            if (slot.AceptaEtiqueta(TipoDeObjeto.Consumible) ||slot.AceptaEtiqueta(TipoDeObjeto.Posion))
             {
                 slotsConsumibles.Add(slot);
             }
         }
     }
 
-    private bool EsSlotUtilizableEnCombate(
-        SlotEspecial slot
-    )
+    private bool EsSlotUtilizableEnCombate(SlotEspecial slot)
     {
-        return slotsConsumibles.Contains(slot) ||
-               slotsAtaques.Contains(slot);
+        return slotsConsumibles.Contains(slot) ||slotsAtaques.Contains(slot);
     }
 
-    private bool IndiceValido(
-        List<SlotEspecial> lista,
-        int indice
-    )
+    private bool IndiceValido(List<SlotEspecial> lista,int indice)
     {
-        return lista != null &&
-               indice >= 0 &&
-               indice < lista.Count;
+        return lista != null &&indice >= 0 &&indice < lista.Count;
     }
 
     private void OnValidate()
@@ -178,9 +150,7 @@ public class EquipamientoCombateManager : MonoBehaviour
         EliminarReferenciasNulas(slotsAtaques);
     }
 
-    private void EliminarReferenciasNulas(
-        List<SlotEspecial> lista
-    )
+    private void EliminarReferenciasNulas(List<SlotEspecial> lista)
     {
         if (lista == null)
         {
