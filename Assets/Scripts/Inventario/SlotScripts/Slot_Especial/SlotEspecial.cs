@@ -27,6 +27,10 @@ public class SlotEspecial : SlotInventario
     public TipoDeObjeto EtiquetaPermitida => etiquetaPermitida;
     public SlotInventarioVisual VisualSlot => visualSlot;
 
+    [Header("Uso del Slot")]
+    private UsoSlotEspecial usoSlotEspecial;
+    public UsoSlotEspecial Uso => usoSlotEspecial;
+
     public bool AceptaEtiqueta(TipoDeObjeto etiqueta)
     {
         return PuedeGuardarEtiqueta(etiqueta);

@@ -29,6 +29,7 @@ public class InventoryManager : MonoBehaviour
 
     [Header("Slots Especiales")]
     [SerializeField] private List<SlotEspecial> slotEspeciales = new List<SlotEspecial>();
+    public IReadOnlyList<SlotEspecial> SlotEspeciales => slotEspeciales;
 
     [Header("Lo visual")]
 
@@ -57,13 +58,10 @@ public class InventoryManager : MonoBehaviour
 
     private void PrepararSlots()
     {
-        // Crea los slots que falten.
         while (slots.Count < cantidadSlots)
         {
             slots.Add(new SlotInventario());
         }
-
-        // Elimina slots sobrantes solamente si están vacíos.
         while (slots.Count > cantidadSlots)
         {
             int ultimoIndice = slots.Count - 1;
@@ -79,7 +77,6 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
-    // Esta función se conecta al Player Input.
     public void OnInventory(InputAction.CallbackContext context)
     {
         if (!context.performed)
@@ -251,9 +248,6 @@ public class InventoryManager : MonoBehaviour
 
             return false;
         }
-
-        // Primero comprueba si cabe toda la cantidad.
-        // Así evitamos guardar una parte y duplicar el sobrante.
         if (!HayEspacioPara(nuevoObjeto, cantidadRecibida))
         {
             Debug.Log("No hay suficiente espacio para recoger " +cantidadRecibida + " x " +nuevoObjeto.nombreObjeto);
@@ -262,8 +256,6 @@ public class InventoryManager : MonoBehaviour
         }
 
         int cantidadRestante = cantidadRecibida;
-
-        // Primero llena los stacks existentes.
         if (nuevoObjeto.esStackeable)
         {
             foreach (SlotInventario slot in ObtenerTodosLosSlots())
@@ -510,6 +502,12 @@ public class InventoryManager : MonoBehaviour
     }
 
     public void ActualizarInventarioDespuesDeCambio()
+    {
+        ActualizarSlotsVisuales();
+        ActualizarEquipamientoVisual();
+    }
+
+    public void ActualizarInv_DespuesDEcambio()
     {
         ActualizarSlotsVisuales();
         ActualizarEquipamientoVisual();
