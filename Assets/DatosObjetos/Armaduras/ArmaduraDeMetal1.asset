@@ -13,14 +13,14 @@ MonoBehaviour:
   m_Name: ArmaduraDeMetal1
   m_EditorClassIdentifier: Assembly-CSharp::DatosArmadura
   nombreObjeto: 
-  etiqueta: 3
+  etiqueta: 0
   descripcion: 
-  icono: {fileID: -773777900661345773, guid: 549bbcc0515749d40b955d5be1fc2d9f, type: 3}
+  icono: {fileID: 0}
   esStackeable: 0
   cantidadMaxima: 1
-  tipoEquipamiento: 1
-  spriteFrente: {fileID: 3934250377918263907, guid: 549bbcc0515749d40b955d5be1fc2d9f, type: 3}
-  spriteEspalda: {fileID: -6743257503950810325, guid: 549bbcc0515749d40b955d5be1fc2d9f, type: 3}
-  spriteLaterales: {fileID: -5189455304937029832, guid: 549bbcc0515749d40b955d5be1fc2d9f, type: 3}
-  defensaExtra: 20
+  tipoEquipamiento: 0
+  spriteFrente: {fileID: 0}
+  spriteEspalda: {fileID: 0}
+  spriteLaterales: {fileID: 0}
+  defensaExtra: 0
   velocidadExtra: 0

@@ -15,8 +15,8 @@ MonoBehaviour:
   nombreObjeto: 
   etiqueta: 0
   descripcion: 
-  icono: {fileID: 4483504832982471387, guid: 23c5e77f66b06ae49a31509d6a3ff574, type: 3}
-  esStackeable: 1
-  cantidadMaxima: 5
-  vidaRecuperada: 30
-  energiaRecuperada: 12
+  icono: {fileID: 0}
+  esStackeable: 0
+  cantidadMaxima: 1
+  vidaRecuperada: 0
+  energiaRecuperada: 0

@@ -13,9 +13,13 @@ MonoBehaviour:
   m_Name: AmuletoNew
   m_EditorClassIdentifier: Assembly-CSharp::DatosAmuleto
   nombreObjeto: 
-  etiqueta: 7
+  etiqueta: 0
   descripcion: 
-  icono: {fileID: 8274842290888404791, guid: 549bbcc0515749d40b955d5be1fc2d9f, type: 3}
+  icono: {fileID: 0}
   esStackeable: 0
   cantidadMaxima: 1
-  bonusMientrasEstaEquipado: {fileID: 11400000, guid: 7a79331d8950f614cb9a99d2eca58501, type: 2}
+  tipoEquipamiento: 0
+  spriteFrente: {fileID: 0}
+  spriteEspalda: {fileID: 0}
+  spriteLaterales: {fileID: 0}
+  bonusMientrasEstaEquipado: {fileID: 0}

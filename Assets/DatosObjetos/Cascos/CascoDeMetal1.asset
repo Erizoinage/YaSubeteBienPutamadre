@@ -12,15 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37b7c970b3eeb9349a360e582d19d613, type: 3}
   m_Name: CascoDeMetal1
   m_EditorClassIdentifier: Assembly-CSharp::DatosArmadura
-  nombreObjeto: Casco de metal
-  etiqueta: 2
+  nombreObjeto: 
+  etiqueta: 0
   descripcion: 
-  icono: {fileID: -8301944022154198740, guid: 549bbcc0515749d40b955d5be1fc2d9f, type: 3}
+  icono: {fileID: 0}
   esStackeable: 0
   cantidadMaxima: 1
   tipoEquipamiento: 0
-  spriteFrente: {fileID: -1180257196230004930, guid: 549bbcc0515749d40b955d5be1fc2d9f, type: 3}
-  spriteEspalda: {fileID: -7655461808958719020, guid: 549bbcc0515749d40b955d5be1fc2d9f, type: 3}
-  spriteLaterales: {fileID: -4509385288770122981, guid: 549bbcc0515749d40b955d5be1fc2d9f, type: 3}
-  defensaExtra: 10
+  spriteFrente: {fileID: 0}
+  spriteEspalda: {fileID: 0}
+  spriteLaterales: {fileID: 0}
+  defensaExtra: 0
   velocidadExtra: 0

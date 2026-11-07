@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cea839efde5dd0f43b91a95f8a3abf3f, type: 3}
   m_Name: EspadaNvl1
   m_EditorClassIdentifier: Assembly-CSharp::DatosArma
-  nombreObjeto: Espada Nvl1
-  etiqueta: 1
+  nombreObjeto: 
+  etiqueta: 0
   descripcion: 
-  icono: {fileID: 5291881858394707114, guid: f5b29be6ce6ace747be9be948d4a2bcd, type: 3}
+  icono: {fileID: 0}
   esStackeable: 0
   cantidadMaxima: 1
-  "da\xF1oArma": 35
-  CostoDeEnergia: 25
+  "da\xF1oArma": 1
+  CostoDeEnergia: 1

@@ -15,12 +15,11 @@ MonoBehaviour:
   nombreObjeto: 
   etiqueta: 0
   descripcion: 
-  icono: {fileID: -2762874589116255767, guid: 549bbcc0515749d40b955d5be1fc2d9f, type: 3}
-  esStackeable: 1
-  cantidadMaxima: 6
-  curacionTotal: 25
-  duracionCuracionSegundos: 5
-  intervaloCuracion: 1
-  energiaInmediata: 0
-  bonusTemporal: {fileID: 0}
-  duracionBonusEnTurnos: 1
+  icono: {fileID: 0}
+  esStackeable: 0
+  cantidadMaxima: 1
+  curacionTotal: 0
+  DuracionCuracionEnSegundos: 1
+  energiaRecuperada: 0
+  aplicaBonus: 0
+  duracionBonusEnTurnos: 0

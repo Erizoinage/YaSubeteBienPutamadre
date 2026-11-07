@@ -13,11 +13,12 @@ MonoBehaviour:
   m_Name: FireBall
   m_EditorClassIdentifier: Assembly-CSharp::DatosHechizo
   nombreObjeto: 
-  etiqueta: 6
+  etiqueta: 0
   descripcion: 
-  icono: {fileID: 2144620571975251255, guid: 549bbcc0515749d40b955d5be1fc2d9f, type: 3}
-  esStackeable: 1
-  cantidadMaxima: 5
-  "da\xF1oHechizo": 50
-  costoEnergia: 50
+  icono: {fileID: 0}
+  esStackeable: 0
+  cantidadMaxima: 1
+  "da\xF1oHechizo": 1
+  costoEnergia: 1
+  costoEnergia_Hechizo: 1
   cantidadConsumidaPorUso: 1
