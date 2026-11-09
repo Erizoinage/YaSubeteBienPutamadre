@@ -157,6 +157,8 @@ public class MovimientoJugador : MonoBehaviour
     {
         if (context.performed)
         {
+            if (GestorCombate.EnCombate) return;
+
             InventoryManager inventoryManager =
                 FindAnyObjectByType<InventoryManager>();
 

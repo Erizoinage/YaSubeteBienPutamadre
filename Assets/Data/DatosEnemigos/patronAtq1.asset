@@ -1,0 +1,64 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd96369eb7361a444a23ca88bac1685a, type: 3}
+  m_Name: patronAtq1
+  m_EditorClassIdentifier: Assembly-CSharp::PatronAtaqueDatos
+  duracion: 8
+  proyectiles:
+  - tiempo: 0.4
+    prefab: {fileID: 8933582202774648582, guid: e52f7810aeaf0f646b8261c0b65be175, type: 3}
+    lado: 0
+    posicion: 0.25
+    velocidad: 3
+    danio: 5
+  - tiempo: 1.2
+    prefab: {fileID: 6680316081627633629, guid: 483335615a053264b9d8d5c06b249328, type: 3}
+    lado: 1
+    posicion: 0.75
+    velocidad: 3
+    danio: 5
+  - tiempo: 2
+    prefab: {fileID: 6680316081627633629, guid: 483335615a053264b9d8d5c06b249328, type: 3}
+    lado: 2
+    posicion: 0.5
+    velocidad: 3
+    danio: 5
+  - tiempo: 2.8
+    prefab: {fileID: 6680316081627633629, guid: 483335615a053264b9d8d5c06b249328, type: 3}
+    lado: 0
+    posicion: 0.75
+    velocidad: 3.5
+    danio: 5
+  - tiempo: 3.6
+    prefab: {fileID: 6680316081627633629, guid: 483335615a053264b9d8d5c06b249328, type: 3}
+    lado: 1
+    posicion: 0.25
+    velocidad: 3.5
+    danio: 5
+  - tiempo: 4.4
+    prefab: {fileID: 6680316081627633629, guid: 483335615a053264b9d8d5c06b249328, type: 3}
+    lado: 3
+    posicion: 0.5
+    velocidad: 3
+    danio: 5
+  - tiempo: 5.2
+    prefab: {fileID: 6680316081627633629, guid: 483335615a053264b9d8d5c06b249328, type: 3}
+    lado: 0
+    posicion: 0.5
+    velocidad: 4
+    danio: 5
+  - tiempo: 6
+    prefab: {fileID: 6680316081627633629, guid: 483335615a053264b9d8d5c06b249328, type: 3}
+    lado: 1
+    posicion: 0.5
+    velocidad: 4
+    danio: 5

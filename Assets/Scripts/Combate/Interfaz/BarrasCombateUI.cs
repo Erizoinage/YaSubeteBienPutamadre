@@ -1,24 +1,88 @@
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class BarrasCombateUI : MonoBehaviour
 {
     [Header("Jugador")]
-    [SerializeField] private Slider barraVida;
+    [SerializeField] private BarraImagen barraVida;
     [SerializeField] private TMP_Text textoVida;
-    [SerializeField] private Slider barraEnergia;
+    [SerializeField] private BarraImagen barraEnergia;
     [SerializeField] private TMP_Text textoEnergia;
 
     [Header("Enemigo (opcional)")]
-    [SerializeField] private Slider barraVidaEnemigo;
+    [SerializeField] private BarraImagen barraVidaEnemigo;
 
     private Combatiente jugador;
     private Combatiente enemigo;
+    private EstadisticasJugador estadisticasJugador;
+
+    public bool PrepararVisibleEnCanvas()
+    {
+        Canvas canvas = GetComponentInParent<Canvas>();
+        if (canvas == null)
+        {
+            Debug.LogError(
+                "BarrasCombateUI debe estar dentro de un Canvas activo.",
+                this
+            );
+            return false;
+        }
+
+        if (!gameObject.activeSelf)
+        {
+            gameObject.SetActive(true);
+        }
+
+        enabled = true;
+        return true;
+    }
+
+    public void VincularJugador(EstadisticasJugador estadisticas)
+    {
+        DesconectarCombatientes();
+        DesconectarEstadisticas();
+
+        if (estadisticas == null)
+        {
+            Debug.LogError("BarrasCombateUI necesita las estadísticas del jugador.", this);
+            return;
+        }
+
+        estadisticasJugador = estadisticas;
+        estadisticasJugador.AlCambiarVida += ActualizarVidaJugador;
+        estadisticasJugador.AlCambiarEnergia += ActualizarEnergiaJugador;
+        ActualizarBarra(
+            barraVida,
+            textoVida,
+            estadisticasJugador.VidaActual,
+            estadisticasJugador.VidaMaxima,
+            true
+        );
+        ActualizarBarra(
+            barraEnergia,
+            textoEnergia,
+            estadisticasJugador.EnergiaActual,
+            estadisticasJugador.EnergiaMaxima,
+            true
+        );
+    }
 
     public void Conectar(Combatiente combatienteJugador, Combatiente combatienteEnemigo)
     {
-        Desconectar();
+        if (!gameObject.activeSelf)
+        {
+            gameObject.SetActive(true);
+        }
+
+        enabled = true;
+        DesconectarCombatientes();
+        DesconectarEstadisticas();
+
+        if (combatienteJugador == null || combatienteEnemigo == null)
+        {
+            Debug.LogError("BarrasCombateUI necesita los dos combatientes.", this);
+            return;
+        }
 
         jugador = combatienteJugador;
         enemigo = combatienteEnemigo;
@@ -27,12 +91,19 @@ public class BarrasCombateUI : MonoBehaviour
         jugador.EnergiaCambiada += ActualizarEnergiaJugador;
         enemigo.VidaCambiada += ActualizarVidaEnemigo;
 
-        ActualizarVidaJugador(jugador.Vida, jugador.VidaMaxima);
-        ActualizarEnergiaJugador(jugador.Energia, jugador.EnergiaMaxima);
-        ActualizarVidaEnemigo(enemigo.Vida, enemigo.VidaMaxima);
+        // Al conectar se muestran los valores actuales sin animación.
+        ActualizarBarra(barraVida, textoVida, jugador.Vida, jugador.VidaMaxima, true);
+        ActualizarBarra(barraEnergia, textoEnergia, jugador.Energia, jugador.EnergiaMaxima, true);
+        ActualizarBarra(barraVidaEnemigo, null, enemigo.Vida, enemigo.VidaMaxima, true);
     }
 
     public void Desconectar()
+    {
+        DesconectarCombatientes();
+        DesconectarEstadisticas();
+    }
+
+    private void DesconectarCombatientes()
     {
         if (jugador != null)
         {
@@ -49,6 +120,21 @@ public class BarrasCombateUI : MonoBehaviour
         enemigo = null;
     }
 
+    private void DesconectarEstadisticas()
+    {
+        if (estadisticasJugador != null)
+        {
+            estadisticasJugador.AlCambiarVida -= ActualizarVidaJugador;
+            estadisticasJugador.AlCambiarEnergia -= ActualizarEnergiaJugador;
+            estadisticasJugador = null;
+        }
+    }
+
+    public bool ConservarVisibleFueraDe(GameObject raizQueSeOculta)
+    {
+        return PrepararVisibleEnCanvas();
+    }
+
     private void OnDestroy()
     {
         Desconectar();
@@ -56,25 +142,24 @@ public class BarrasCombateUI : MonoBehaviour
 
     private void ActualizarVidaJugador(int actual, int maximo)
     {
-        ActualizarBarra(barraVida, textoVida, actual, maximo);
+        ActualizarBarra(barraVida, textoVida, actual, maximo, false);
     }
 
     private void ActualizarEnergiaJugador(int actual, int maximo)
     {
-        ActualizarBarra(barraEnergia, textoEnergia, actual, maximo);
+        ActualizarBarra(barraEnergia, textoEnergia, actual, maximo, false);
     }
 
     private void ActualizarVidaEnemigo(int actual, int maximo)
     {
-        ActualizarBarra(barraVidaEnemigo, null, actual, maximo);
+        ActualizarBarra(barraVidaEnemigo, null, actual, maximo, false);
     }
 
-    private void ActualizarBarra(Slider barra, TMP_Text texto, int actual, int maximo)
+    private void ActualizarBarra(BarraImagen barra, TMP_Text texto, int actual, int maximo, bool instantaneo)
     {
         if (barra != null)
         {
-            barra.maxValue = maximo;
-            barra.value = actual;
+            barra.Establecer(maximo > 0 ? (float)actual / maximo : 0f, instantaneo);
         }
 
         if (texto != null)

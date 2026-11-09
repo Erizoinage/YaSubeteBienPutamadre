@@ -8,6 +8,8 @@ public class PanelCombateUI : MonoBehaviour
     [Header("Panel")]
     [SerializeField] private GameObject raiz;
 
+    public GameObject Raiz => raiz;
+
     [Header("Enemigo")]
     [SerializeField] private Image imagenEnemigo;
     [SerializeField] private TMP_Text textoNombreEnemigo;
@@ -18,8 +20,25 @@ public class PanelCombateUI : MonoBehaviour
     [SerializeField, Min(0f)] private float pausaTrasTexto = 0.8f;
     [SerializeField] private ControlesCombate controles;
 
+    private void Awake()
+    {
+        if (raiz == null)
+        {
+            Debug.LogError("PanelCombateUI necesita asignar la raíz del panel.", this);
+            return;
+        }
+
+        raiz.SetActive(false);
+    }
+
     public void Mostrar(DatosEnemigo datos)
     {
+        if (raiz == null)
+        {
+            Debug.LogError("PanelCombateUI necesita asignar la raíz del panel.", this);
+            return;
+        }
+
         raiz.SetActive(true);
 
         if (imagenEnemigo != null)
@@ -37,7 +56,23 @@ public class PanelCombateUI : MonoBehaviour
 
     public void Ocultar()
     {
+        if (raiz == null)
+        {
+            Debug.LogError("PanelCombateUI necesita asignar la raíz del panel.", this);
+            return;
+        }
+
         raiz.SetActive(false);
+    }
+
+    public void OcultarConBarras(BarrasCombateUI barras)
+    {
+        if (barras != null)
+        {
+            barras.gameObject.SetActive(false);
+        }
+
+        Ocultar();
     }
 
     // Escribe el texto letra por letra. Confirmar lo muestra completo.
@@ -85,4 +120,5 @@ public class PanelCombateUI : MonoBehaviour
             yield return new WaitForSeconds(pausaTrasTexto);
         }
     }
+
 }

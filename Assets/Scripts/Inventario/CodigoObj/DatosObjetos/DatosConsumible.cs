@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "NuevoConsumible",menuName = "Inventario/Consumible")]
-public class DatosConsumible : DatosObjeto_Base
+public class DatosConsumible : DatosObjeto_Base, IConsumibleCombate
 {
     [Header("Curacion gradual")]
 
@@ -12,7 +12,7 @@ public class DatosConsumible : DatosObjeto_Base
     [Min(0.1f)]
     [Tooltip(
         "Duracion total de la curacion en segundos. " +
-        "Solo avanza durante el turno enemigo."
+        "Se aplica en pulsos al inicio de cada turno del jugador."
     )]
     public float duracionCuracionSegundos = 5f;
 
@@ -34,6 +34,22 @@ public class DatosConsumible : DatosObjeto_Base
     [Min(1)]
     [Tooltip("Cantidad de turnos que durara el bonus.")]
     public int duracionBonusEnTurnos = 1;
+
+    public int CuracionInstantanea => 0;
+    public int EnergiaInstantanea => energiaInmediata;
+    public int CuracionGradualTotal => curacionTotal;
+    public int TurnosCuracion => curacionTotal > 0
+        ? Mathf.CeilToInt(
+            Mathf.Max(0.1f, duracionCuracionSegundos) /
+            Mathf.Max(0.1f, intervaloCuracion)
+        )
+        : 0;
+    public int CuracionPorTurno => TurnosCuracion > 0
+        ? Mathf.CeilToInt((float)curacionTotal / TurnosCuracion)
+        : 0;
+    public int TurnosBonus => TieneBonus() ? duracionBonusEnTurnos : 0;
+    public int TurnosDeEfecto => Mathf.Max(TurnosCuracion, TurnosBonus);
+    public float BonusDanio => bonusTemporal != null ? bonusTemporal.bonusDanio : 0f;
 
     public bool TieneBonus()
     {

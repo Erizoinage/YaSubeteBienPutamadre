@@ -15,11 +15,12 @@ public class DatosBonus : ScriptableObject
     public int vidaMaximaExtra;
     public int energiaMaximaExtra;
     public float velocidadExtra;
+    [Min(0f)] public float bonusDanio;
 
     public bool TieneAlgunaModificacion()
     {
         return ataqueExtra != 0 ||defensaExtra != 0 ||vidaMaximaExtra != 0 
-        ||energiaMaximaExtra != 0 ||!Mathf.Approximately(velocidadExtra, 0f);
+        ||energiaMaximaExtra != 0 ||!Mathf.Approximately(velocidadExtra, 0f)
+        ||!Mathf.Approximately(bonusDanio, 0f);
     }
 }
-

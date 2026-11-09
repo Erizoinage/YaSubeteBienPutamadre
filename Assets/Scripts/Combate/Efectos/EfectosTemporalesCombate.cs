@@ -7,8 +7,11 @@ public class EfectosTemporalesCombate : MonoBehaviour
     private class Efecto
     {
         public int curacionPorTurno;
-        public int turnosRestantes;
+        public int curacionRestante;
+        public int turnosCuracion;
         public float bonusDanio;
+        public int turnosBonus;
+        public bool bonusIniciado;
     }
 
     private readonly List<Efecto> efectos = new List<Efecto>();
@@ -21,7 +24,10 @@ public class EfectosTemporalesCombate : MonoBehaviour
 
             foreach (Efecto efecto in efectos)
             {
-                total += efecto.bonusDanio;
+                if (efecto.turnosBonus > 0)
+                {
+                    total += efecto.bonusDanio;
+                }
             }
 
             return total;
@@ -30,7 +36,8 @@ public class EfectosTemporalesCombate : MonoBehaviour
 
     public void Agregar(IConsumibleCombate consumible)
     {
-        if (consumible == null || consumible.TurnosDeEfecto <= 0)
+        if (consumible == null ||
+            (consumible.TurnosCuracion <= 0 && consumible.TurnosBonus <= 0))
         {
             return;
         }
@@ -38,8 +45,10 @@ public class EfectosTemporalesCombate : MonoBehaviour
         efectos.Add(new Efecto
         {
             curacionPorTurno = consumible.CuracionPorTurno,
-            turnosRestantes = consumible.TurnosDeEfecto,
-            bonusDanio = consumible.BonusDanio
+            curacionRestante = consumible.CuracionGradualTotal,
+            turnosCuracion = consumible.TurnosCuracion,
+            bonusDanio = consumible.BonusDanio,
+            turnosBonus = consumible.TurnosBonus
         });
     }
 
@@ -50,14 +59,34 @@ public class EfectosTemporalesCombate : MonoBehaviour
         {
             Efecto efecto = efectos[i];
 
-            if (efecto.turnosRestantes <= 0)
+            if (efecto.turnosCuracion <= 0 && efecto.turnosBonus <= 0)
             {
                 efectos.RemoveAt(i);
                 continue;
             }
 
-            objetivo.Curar(efecto.curacionPorTurno);
-            efecto.turnosRestantes--;
+            if (efecto.turnosCuracion > 0 && efecto.curacionRestante > 0)
+            {
+                int curacion = Mathf.Min(
+                    efecto.curacionPorTurno,
+                    efecto.curacionRestante
+                );
+                objetivo.Curar(curacion);
+                efecto.curacionRestante -= curacion;
+                efecto.turnosCuracion--;
+            }
+
+            if (efecto.turnosBonus > 0)
+            {
+                if (efecto.bonusIniciado)
+                {
+                    efecto.turnosBonus--;
+                }
+                else
+                {
+                    efecto.bonusIniciado = true;
+                }
+            }
         }
     }
 

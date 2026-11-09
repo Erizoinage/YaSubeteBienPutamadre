@@ -56,10 +56,7 @@ public class VisualEquipamiento : MonoBehaviour
         ActualizarVisuales();
     }
 
-    public void EstablecerEquipamiento(
-        DatosEquipable nuevoCasco,
-        DatosEquipable nuevaArmadura
-    )
+    public void EstablecerEquipamiento(DatosEquipable nuevoCasco,DatosEquipable nuevaArmadura)
     {
         if (nuevoCasco != null && cascoEquipado != nuevoCasco)
         {
@@ -144,22 +141,12 @@ public class VisualEquipamiento : MonoBehaviour
     {
         ActualizarOrdenCapas();
 
-        ActualizarRenderer(
-            visualCasco,
-            cascoEquipado
-        );
+        ActualizarRenderer(visualCasco,cascoEquipado);
 
-        ActualizarRenderer(
-            visualArmadura,
-            armaduraEquipada
-        );
+        ActualizarRenderer(visualArmadura,armaduraEquipada);
     }
 
-    private SpriteRenderer CrearRenderer(
-        string nombre,
-        Transform puntoVisual,
-        SpriteRenderer rendererJugador
-    )
+    private SpriteRenderer CrearRenderer(string nombre,Transform puntoVisual,SpriteRenderer rendererJugador)
     {
         if (rendererJugador == null)
         {
@@ -193,11 +180,7 @@ public class VisualEquipamiento : MonoBehaviour
             return punto;
         }
 
-        Debug.LogWarning(
-            "El punto de " + nombrePunto +
-            " debe ser hijo del objeto que tiene VisualEquipamiento.",
-            this
-        );
+        Debug.LogWarning("El punto de " + nombrePunto +" debe ser hijo del objeto que tiene VisualEquipamiento.", this);
 
         return transform;
     }

@@ -20,10 +20,40 @@ public class BarraMultiplicadorUI : MonoBehaviour
     [SerializeField] private AnimationCurve curvaMultiplicador = AnimationCurve.Linear(0f, 0.5f, 1f, 1.5f);
 
     public float UltimoMultiplicador { get; private set; } = 1f;
+    public bool UltimaEjecucionConfirmada { get; private set; }
+
+    public bool PuedeEjecutarse =>
+        raiz != null && barra != null && marcador != null && controles != null &&
+        marcador.parent == barra;
 
     public IEnumerator Ejecutar()
     {
+        UltimaEjecucionConfirmada = false;
+        if (!PuedeEjecutarse)
+        {
+            Debug.LogError(
+                "BarraMultiplicadorUI necesita raiz, barra, marcador hijo directo y controles.",
+                this
+            );
+            yield break;
+        }
+
+        marcador.anchorMin = new Vector2(0.5f, marcador.anchorMin.y);
+        marcador.anchorMax = new Vector2(0.5f, marcador.anchorMax.y);
+        marcador.pivot = new Vector2(0.5f, marcador.pivot.y);
+
         raiz.SetActive(true);
+        Canvas.ForceUpdateCanvases();
+        UnityEngine.UI.LayoutRebuilder.ForceRebuildLayoutImmediate(barra);
+        yield return null;
+
+        if (barra.rect.width <= 0f)
+        {
+            Debug.LogError("La barra multiplicadora no tiene ancho visible.", this);
+            Ocultar();
+            yield break;
+        }
+
         UltimoMultiplicador = 1f;
 
         float tiempo = 0f;
@@ -42,18 +72,30 @@ public class BarraMultiplicadorUI : MonoBehaviour
                 detenido = true;
                 float cercania = 1f - Mathf.Abs(posicion - 0.5f) * 2f;
                 UltimoMultiplicador = curvaMultiplicador.Evaluate(cercania);
+                UltimaEjecucionConfirmada = true;
             }
 
             yield return null;
         }
 
         yield return new WaitForSeconds(pausaResultado);
-        raiz.SetActive(false);
+        Ocultar();
+    }
+
+    public void Ocultar()
+    {
+        if (raiz != null)
+        {
+            raiz.SetActive(false);
+        }
     }
 
     private void MoverMarcador(float posicion)
     {
-        float x = (posicion - 0.5f) * barra.rect.width;
-        marcador.anchoredPosition = new Vector2(x, marcador.anchoredPosition.y);
+        float recorrido = Mathf.Max(0f, barra.rect.width - marcador.rect.width);
+        float x = (posicion - 0.5f) * recorrido;
+        Vector2 posicionMarcador = marcador.anchoredPosition;
+        posicionMarcador.x = x;
+        marcador.anchoredPosition = posicionMarcador;
     }
 }

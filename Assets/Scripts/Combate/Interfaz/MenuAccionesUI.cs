@@ -2,9 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+// Los botones se conectan por código cuando empieza el turno del jugador:
+// NO añadas eventos OnClick a mano en el Inspector.
 public class MenuAccionesUI : MonoBehaviour
 {
     [Header("Menú principal")]
@@ -13,10 +16,12 @@ public class MenuAccionesUI : MonoBehaviour
     [SerializeField] private Button botonConsumible;
     [SerializeField] private Button botonHuir;
 
-    [Header("Submenú (3 slots de armas/hechizos o consumibles)")]
+    [Header("Submenú (el elemento 0 de cada lista es el primer botón)")]
     [SerializeField] private GameObject contenedorSubmenu;
     [SerializeField] private Button[] botonesSlot = new Button[3];
     [SerializeField] private TMP_Text[] textosSlot = new TMP_Text[3];
+    [Tooltip("Opcional: Image hija de cada botón donde se muestra el icono del objeto.")]
+    [SerializeField] private Image[] iconosSlot = new Image[3];
     [SerializeField] private Button botonVolver;
 
     public AccionJugador AccionElegida { get; private set; }
@@ -47,8 +52,8 @@ public class MenuAccionesUI : MonoBehaviour
 
     public void Ocultar()
     {
-        contenedorPrincipal.SetActive(false);
-        contenedorSubmenu.SetActive(false);
+        Activar(contenedorPrincipal, false);
+        Activar(contenedorSubmenu, false);
     }
 
     private void PrepararListeners()
@@ -60,16 +65,27 @@ public class MenuAccionesUI : MonoBehaviour
 
         listenersListos = true;
 
-        botonAtacar.onClick.AddListener(() => AbrirSubmenu(TipoAccion.Atacar));
-        botonConsumible.onClick.AddListener(() => AbrirSubmenu(TipoAccion.UsarConsumible));
-        botonHuir.onClick.AddListener(() => Elegir(new AccionJugador(TipoAccion.Huir, null)));
-        botonVolver.onClick.AddListener(MostrarPrincipal);
+        ConectarBoton(botonAtacar, "botonAtacar", () => AbrirSubmenu(TipoAccion.Atacar));
+        ConectarBoton(botonConsumible, "botonConsumible", () => AbrirSubmenu(TipoAccion.UsarConsumible));
+        ConectarBoton(botonHuir, "botonHuir", () => Elegir(new AccionJugador(TipoAccion.Huir, null)));
+        ConectarBoton(botonVolver, "botonVolver", MostrarPrincipal);
+    }
+
+    private void ConectarBoton(Button boton, string nombreCampo, UnityAction accion)
+    {
+        if (boton == null)
+        {
+            Debug.LogWarning("MenuAccionesUI: falta asignar " + nombreCampo + ".", this);
+            return;
+        }
+
+        boton.onClick.AddListener(accion);
     }
 
     private void MostrarPrincipal()
     {
-        contenedorSubmenu.SetActive(false);
-        contenedorPrincipal.SetActive(true);
+        Activar(contenedorSubmenu, false);
+        Activar(contenedorPrincipal, true);
         Seleccionar(botonAtacar);
     }
 
@@ -79,65 +95,126 @@ public class MenuAccionesUI : MonoBehaviour
             ? equipamiento.SlotsAtaques
             : equipamiento.SlotsConsumibles;
 
-        contenedorPrincipal.SetActive(false);
-        contenedorSubmenu.SetActive(true);
+        Activar(contenedorPrincipal, false);
+        Activar(contenedorSubmenu, true);
 
         Button primerUtilizable = null;
 
         for (int i = 0; i < botonesSlot.Length; i++)
         {
-            SlotEspecial slot = i < slots.Count ? slots[i] : null;
-            string descripcion = Describir(slot, tipo, out bool utilizable);
+            Button boton = botonesSlot[i];
 
-            textosSlot[i].text = descripcion;
-            botonesSlot[i].interactable = utilizable;
-            botonesSlot[i].onClick.RemoveAllListeners();
-
-            if (utilizable)
+            if (boton == null)
             {
-                SlotEspecial slotElegido = slot;
-                botonesSlot[i].onClick.AddListener(() => Elegir(new AccionJugador(tipo, slotElegido)));
+                continue;
+            }
 
-                if (primerUtilizable == null)
-                {
-                    primerUtilizable = botonesSlot[i];
-                }
+            SlotEspecial slot = i < slots.Count ? slots[i] : null;
+            bool utilizable = Describir(slot, tipo, out string texto, out Sprite icono);
+
+            if (i < textosSlot.Length && textosSlot[i] != null)
+            {
+                textosSlot[i].text = texto;
+            }
+
+            Image imagenIcono = ObtenerImagenIcono(i, boton);
+            if (imagenIcono != null)
+            {
+                imagenIcono.sprite = icono;
+                imagenIcono.preserveAspect = true;
+                imagenIcono.enabled = icono != null;
+            }
+
+            boton.interactable = utilizable;
+            boton.onClick.RemoveAllListeners();
+
+            if (!utilizable)
+            {
+                continue;
+            }
+
+            SlotEspecial slotElegido = slot;
+            boton.onClick.AddListener(() => Elegir(new AccionJugador(tipo, slotElegido)));
+
+            if (primerUtilizable == null)
+            {
+                primerUtilizable = boton;
             }
         }
 
         Seleccionar(primerUtilizable != null ? primerUtilizable : botonVolver);
     }
 
-    private string Describir(SlotEspecial slot, TipoAccion tipo, out bool utilizable)
+    private Image ObtenerImagenIcono(int indice, Button boton)
     {
-        utilizable = false;
+        if (iconosSlot != null &&
+            indice < iconosSlot.Length &&
+            iconosSlot[indice] != null)
+        {
+            return iconosSlot[indice];
+        }
+
+        Image[] imagenes = boton.GetComponentsInChildren<Image>(true);
+        foreach (Image imagen in imagenes)
+        {
+            if (imagen != boton.targetGraphic)
+            {
+                return imagen;
+            }
+        }
+
+        return null;
+    }
+
+    // Devuelve true si el slot se puede usar ahora.
+    private bool Describir(SlotEspecial slot, TipoAccion tipo, out string texto, out Sprite icono)
+    {
+        texto = "—";
+        icono = null;
 
         if (slot == null || slot.EstaVacio())
         {
-            return "—";
+            return false;
         }
 
         DatosObjeto_Base objeto = slot.Objeto;
+        texto = objeto.nombreObjeto;
+        icono = objeto.icono;
 
-        if (tipo == TipoAccion.Atacar && objeto is IAtaqueCombate ataque)
+        if (tipo == TipoAccion.Atacar)
         {
-            utilizable = jugador.Energia >= ataque.CostoEnergia;
-            return objeto.nombreObjeto + " (" + ataque.CostoEnergia + " EN)";
+            if (objeto is IAtaqueCombate ataque)
+            {
+                texto = objeto.nombreObjeto + " (" + ataque.CostoEnergia + " EN)";
+                return jugador.Energia >= ataque.CostoEnergia;
+            }
+
+            Debug.LogWarning(objeto.nombreObjeto + " no implementa IAtaqueCombate, por eso su botón está desactivado.", objeto);
+            return false;
         }
 
-        if (tipo == TipoAccion.UsarConsumible && objeto is IConsumibleCombate)
+        if (objeto is IConsumibleCombate)
         {
-            utilizable = true;
-            return objeto.nombreObjeto + " x" + slot.Cantidad;
+            texto = objeto.nombreObjeto + " x" + slot.Cantidad;
+            return true;
         }
 
-        return objeto.nombreObjeto;
+        Debug.LogWarning(objeto.nombreObjeto + " no implementa IConsumibleCombate, por eso su botón está desactivado.", objeto);
+        return false;
     }
 
     private void Elegir(AccionJugador accion)
     {
         AccionElegida = accion;
         hayEleccion = true;
+    }
+
+    private void Activar(GameObject objeto, bool activo)
+    {
+        if (objeto != null)
+        {
+            objeto.SetActive(activo);
+        }
     }
 
     private void Seleccionar(Button boton)

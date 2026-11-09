@@ -11,6 +11,7 @@ public class GestorCombate : MonoBehaviour
 
     [Header("Jugador")]
     [SerializeField] private MovimientoJugador movimientoJugador;
+    [SerializeField] private EstadisticasJugador estadisticasJugador;
     [SerializeField] private Combatiente jugador;
     [SerializeField] private EquipamientoCombateManager equipamiento;
     [SerializeField] private EfectosTemporalesCombate efectos;
@@ -39,6 +40,24 @@ public class GestorCombate : MonoBehaviour
     private ResultadoCombate? resultado;
     private bool turnoConsumido;
     private int numeroDeTurno;
+
+    private void Awake()
+    {
+        if (estadisticasJugador == null && movimientoJugador != null)
+        {
+            estadisticasJugador = movimientoJugador.GetComponent<EstadisticasJugador>();
+        }
+
+        if (barras != null)
+        {
+            barras.gameObject.SetActive(false);
+
+            if (estadisticasJugador != null)
+            {
+                barras.VincularJugador(estadisticasJugador);
+            }
+        }
+    }
 
     public void IniciarCombate(DatosEnemigo datosEnemigo)
     {
@@ -107,6 +126,9 @@ public class GestorCombate : MonoBehaviour
     private IEnumerator RutinaIntro()
     {
         panel.Mostrar(datos);
+        menu.Ocultar();
+        barraMultiplicador.Ocultar();
+        barras.gameObject.SetActive(true);
         barras.Conectar(jugador, enemigo);
 
         yield return Decir(FrasesEnemigo.Elegir(datos.frases.intro), true);
@@ -194,8 +216,11 @@ public class GestorCombate : MonoBehaviour
 
         yield return Decir(FrasesEnemigo.Elegir(frases));
 
-        panel.Ocultar();
-        barras.Desconectar();
+        panel.OcultarConBarras(barras);
+        if (estadisticasJugador != null)
+        {
+            barras.VincularJugador(estadisticasJugador);
+        }
         efectos.Limpiar();
         movimientoJugador.ActivarMovimiento();
 
@@ -208,6 +233,12 @@ public class GestorCombate : MonoBehaviour
 
     private IEnumerator EjecutarAtaque(SlotEspecial slot)
     {
+        if (slot == null || slot.EstaVacio() || !barraMultiplicador.PuedeEjecutarse)
+        {
+            Debug.LogError("No se puede atacar sin una barra multiplicadora configurada.", this);
+            yield break;
+        }
+
         DatosObjeto_Base objeto = slot.Objeto;
         IAtaqueCombate ataque = objeto as IAtaqueCombate;
 
@@ -216,13 +247,21 @@ public class GestorCombate : MonoBehaviour
             yield break;
         }
 
-        // Las armas no se gastan; los hechizos se gastan de uno en uno.
-        if (objeto.etiqueta == TipoDeObjeto.Echizo)
+        yield return StartCoroutine(barraMultiplicador.Ejecutar());
+
+        if (!barraMultiplicador.UltimaEjecucionConfirmada)
         {
-            equipamiento.ConsumirDesdeSlot(slot, 1);
+            jugador.RecuperarEnergia(ataque.CostoEnergia);
+            yield break;
         }
 
-        yield return StartCoroutine(barraMultiplicador.Ejecutar());
+        // Las armas no se gastan; los hechizos se gastan de uno en uno.
+        if (objeto.etiqueta == TipoDeObjeto.Echizo &&
+            !equipamiento.ConsumirDesdeSlot(slot, 1))
+        {
+            jugador.RecuperarEnergia(ataque.CostoEnergia);
+            yield break;
+        }
 
         int danio = Mathf.RoundToInt(
             ataque.DanioBase * barraMultiplicador.UltimoMultiplicador * efectos.MultiplicadorDanio
@@ -248,6 +287,7 @@ public class GestorCombate : MonoBehaviour
         }
 
         jugador.Curar(consumible.CuracionInstantanea);
+        jugador.RecuperarEnergia(consumible.EnergiaInstantanea);
         efectos.Agregar(consumible);
 
         yield return Decir(textos.usarConsumible.Replace("{objeto}", objeto.nombreObjeto));

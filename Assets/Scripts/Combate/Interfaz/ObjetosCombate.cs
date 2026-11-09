@@ -6,14 +6,16 @@ public interface IAtaqueCombate
     int CostoEnergia { get; }
 }
 
-// Implementa esta interfaz en tus pociones y comida.
-// Poción: solo CuracionInstantanea.
-// Comida: CuracionPorTurno + TurnosDeEfecto (+ BonusDanio opcional).
+// Implementa esta interfaz en pociones y consumibles de curación gradual.
 public interface IConsumibleCombate
 {
     int CuracionInstantanea { get; }
+    int EnergiaInstantanea { get; }
+    int CuracionGradualTotal { get; }
     int CuracionPorTurno { get; }
     int TurnosDeEfecto { get; }
+    int TurnosCuracion { get; }
+    int TurnosBonus { get; }
 
     // 0.1 = +10% de daño mientras dure el efecto.
     float BonusDanio { get; }

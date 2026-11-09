@@ -1,12 +1,17 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [CreateAssetMenu(fileName = "NuevaArma",menuName ="Inventario/Arma")]
-public class DatosArma : DatosObjeto_Base
+public class DatosArma : DatosObjeto_Base, IAtaqueCombate
 {
     [Header("Propiedades de combate")]
     [Min(0)]public int dañoArma =1;
     
-    [Min(0)] public int CostoDeEnergia =1;
+    [FormerlySerializedAs("CostoDeEnergia")]
+    [Min(0)] public int costoDeEnergia =1;
+
+    public int DanioBase => dañoArma;
+    public int CostoEnergia => costoDeEnergia;
 
     public int CalcularDañoTotal(EstadisticasJugador estadisticasJugador)
     {
@@ -28,7 +33,6 @@ public class DatosArma : DatosObjeto_Base
         {
             return false;
         }
-        return estadisticasJugador.TieneEnergia(CostoDeEnergia);
+        return estadisticasJugador.TieneEnergia(costoDeEnergia);
     }
     }
-

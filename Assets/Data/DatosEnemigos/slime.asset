@@ -10,19 +10,31 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b8f395b71ac910c40aad084742b51ea9, type: 3}
-  m_Name: Enemigo1
+  m_Name: slime
   m_EditorClassIdentifier: Assembly-CSharp::DatosEnemigo
-  nombre: Enemigo
+  nombre: Slime
   sprite: {fileID: 368543389579951487, guid: c8d6375f6ba7b944697574138690bb54, type: 3}
-  vidaMaxima: 50
+  vidaMaxima: 80
   patrones:
-  - {fileID: 0}
+  - {fileID: 11400000, guid: c50dba60d65b22542baa5dd27baf559f, type: 2}
   patronesEnOrden: 0
   frases:
-    intro: []
-    turnoJugador: []
+    intro:
+    - 'hola pelemos
+
+'
+    turnoJugador:
+    - 'aver aver putito
+
+'
     prepararTurnoRival: []
     prepararTurnoJugador: []
-    victoria: []
+    victoria:
+    - 'chingatumadre
+
+'
     derrota: []
-    huida: []
+    huida:
+    - 'que puto jajaja
+
+'
