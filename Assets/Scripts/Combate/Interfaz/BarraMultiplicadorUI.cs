@@ -92,7 +92,8 @@ public class BarraMultiplicadorUI : MonoBehaviour
 
     private void MoverMarcador(float posicion)
     {
-        float recorrido = Mathf.Max(0f, barra.rect.width - marcador.rect.width);
+        float anchoMarcador = marcador.rect.width * Mathf.Abs(marcador.localScale.x);
+        float recorrido = Mathf.Max(0f, barra.rect.width - anchoMarcador);
         float x = (posicion - 0.5f) * recorrido;
         Vector2 posicionMarcador = marcador.anchoredPosition;
         posicionMarcador.x = x;

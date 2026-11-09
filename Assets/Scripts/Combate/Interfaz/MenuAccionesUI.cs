@@ -123,6 +123,8 @@ public class MenuAccionesUI : MonoBehaviour
                 imagenIcono.sprite = icono;
                 imagenIcono.preserveAspect = true;
                 imagenIcono.enabled = icono != null;
+                imagenIcono.raycastTarget = false;
+                ReservarEspacioParaIcono(boton);
             }
 
             boton.interactable = utilizable;
@@ -163,7 +165,38 @@ public class MenuAccionesUI : MonoBehaviour
             }
         }
 
-        return null;
+        GameObject objetoIcono = new GameObject(
+            "IconoObjeto",
+            typeof(RectTransform),
+            typeof(CanvasRenderer),
+            typeof(Image)
+        );
+        objetoIcono.transform.SetParent(boton.transform, false);
+
+        RectTransform rectTransform = objetoIcono.GetComponent<RectTransform>();
+        rectTransform.anchorMin = new Vector2(0f, 0.5f);
+        rectTransform.anchorMax = new Vector2(0f, 0.5f);
+        rectTransform.pivot = new Vector2(0f, 0.5f);
+        rectTransform.anchoredPosition = new Vector2(8f, 0f);
+        rectTransform.sizeDelta = new Vector2(48f, 48f);
+
+        return objetoIcono.GetComponent<Image>();
+    }
+
+    private void ReservarEspacioParaIcono(Button boton)
+    {
+        TMP_Text texto = boton.GetComponentInChildren<TMP_Text>(true);
+        if (texto == null)
+        {
+            return;
+        }
+
+        RectTransform rectTransform = texto.rectTransform;
+        rectTransform.anchorMin = Vector2.zero;
+        rectTransform.anchorMax = Vector2.one;
+        rectTransform.offsetMin = new Vector2(64f, rectTransform.offsetMin.y);
+        rectTransform.offsetMax = new Vector2(-8f, rectTransform.offsetMax.y);
+        texto.alignment = TextAlignmentOptions.MidlineLeft;
     }
 
     // Devuelve true si el slot se puede usar ahora.

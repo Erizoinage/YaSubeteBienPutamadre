@@ -40,9 +40,15 @@ public class GestorCombate : MonoBehaviour
     private ResultadoCombate? resultado;
     private bool turnoConsumido;
     private int numeroDeTurno;
+    private GameObject raizInterfazCombate;
 
     private void Awake()
     {
+        if (panel != null)
+        {
+            raizInterfazCombate = panel.transform.root.gameObject;
+        }
+
         if (estadisticasJugador == null && movimientoJugador != null)
         {
             estadisticasJugador = movimientoJugador.GetComponent<EstadisticasJugador>();
@@ -71,6 +77,7 @@ public class GestorCombate : MonoBehaviour
         numeroDeTurno = 0;
         EnCombate = true;
 
+        raizInterfazCombate.SetActive(true);
         movimientoJugador.DesactivarMovimiento();
         enemigo.Configurar(datos.vidaMaxima, 0);
         jugador.RestaurarEnergia();
@@ -128,7 +135,6 @@ public class GestorCombate : MonoBehaviour
         panel.Mostrar(datos);
         menu.Ocultar();
         barraMultiplicador.Ocultar();
-        barras.gameObject.SetActive(true);
         barras.Conectar(jugador, enemigo);
 
         yield return Decir(FrasesEnemigo.Elegir(datos.frases.intro), true);
@@ -172,8 +178,10 @@ public class GestorCombate : MonoBehaviour
 
     private IEnumerator RutinaPreparaTurnoRival()
     {
+        barras.PrepararVisibleEnCanvas();
         yield return Decir(FrasesEnemigo.Elegir(datos.frases.prepararTurnoRival));
         yield return StartCoroutine(arena.Entrar());
+        barras.PrepararVisibleEnCanvas();
     }
 
     private IEnumerator RutinaTurnoRival()
@@ -224,6 +232,7 @@ public class GestorCombate : MonoBehaviour
         efectos.Limpiar();
         movimientoJugador.ActivarMovimiento();
 
+        raizInterfazCombate.SetActive(false);
         EnCombate = false;
         FaseActual = FaseCombate.Inactivo;
         CombateTerminado?.Invoke(resultado.Value);

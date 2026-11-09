@@ -21,12 +21,18 @@ public class BarrasCombateUI : MonoBehaviour
         Canvas canvas = GetComponentInParent<Canvas>();
         if (canvas == null)
         {
-            Debug.LogError(
-                "BarrasCombateUI debe estar dentro de un Canvas activo.",
-                this
-            );
+            Debug.LogError( "BarrasCombateUI debe estar dentro de un Canvas activo.",this);
             return false;
         }
+
+        Canvas canvasRaiz = canvas.rootCanvas;
+        if (!canvasRaiz.gameObject.activeSelf)
+        {
+            canvasRaiz.gameObject.SetActive(true);
+        }
+
+        canvas.overrideSorting = true;
+        canvas.sortingOrder = Mathf.Max(canvas.sortingOrder, 100);
 
         if (!gameObject.activeSelf)
         {
@@ -51,13 +57,7 @@ public class BarrasCombateUI : MonoBehaviour
         estadisticasJugador = estadisticas;
         estadisticasJugador.AlCambiarVida += ActualizarVidaJugador;
         estadisticasJugador.AlCambiarEnergia += ActualizarEnergiaJugador;
-        ActualizarBarra(
-            barraVida,
-            textoVida,
-            estadisticasJugador.VidaActual,
-            estadisticasJugador.VidaMaxima,
-            true
-        );
+        ActualizarBarra(barraVida, textoVida,estadisticasJugador.VidaActual,estadisticasJugador.VidaMaxima,true );
         ActualizarBarra(
             barraEnergia,
             textoEnergia,
@@ -69,12 +69,11 @@ public class BarrasCombateUI : MonoBehaviour
 
     public void Conectar(Combatiente combatienteJugador, Combatiente combatienteEnemigo)
     {
-        if (!gameObject.activeSelf)
+        if (!PrepararVisibleEnCanvas())
         {
-            gameObject.SetActive(true);
+            return;
         }
 
-        enabled = true;
         DesconectarCombatientes();
         DesconectarEstadisticas();
 

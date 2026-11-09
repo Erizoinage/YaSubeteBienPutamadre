@@ -1987,7 +1987,7 @@ Canvas:
   m_PlaneDistance: 100
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
-  m_OverrideSorting: 0
+  m_OverrideSorting: 1
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
@@ -1995,7 +1995,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 10
   m_TargetDisplay: 0
 --- !u!224 &316025747
 RectTransform:
@@ -12395,7 +12395,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &661774714
 RectTransform:
   m_ObjectHideFlags: 0
@@ -14630,7 +14630,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GestorCombate
   movimientoJugador: {fileID: 1489660676}
-  estadisticasJugador: {fileID: 0}
+  estadisticasJugador: {fileID: 1738500023148759003}
   jugador: {fileID: 1738500023148759004}
   equipamiento: {fileID: 1985125381}
   efectos: {fileID: 1228246475}
@@ -16852,7 +16852,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::JugadorEsquive
   stats: {fileID: 1738500023148759004}
   controles: {fileID: 1073773911}
-  velocidad: 5
+  velocidad: 6
   ventanaParry: 0.15
   enfriamientoParry: 0.6
   energiaPorParry: 5

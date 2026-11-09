@@ -69,6 +69,35 @@ public class ArenaEsquive : MonoBehaviour
         return Vector2.Scale(unidades, escala);
     }
 
+    public Vector2 ConvertirMovimiento(Vector2 movimiento)
+    {
+        Vector2 escalaUnidades = EscalaCanvas;
+        Vector2 escalaTransformacion = new Vector2(
+            Mathf.Abs(espacioCoordenadas.lossyScale.x),
+            Mathf.Abs(espacioCoordenadas.lossyScale.y)
+        );
+        Vector2 desplazamientoVisible = Vector2.Scale(
+            ConvertirUnidades(movimiento),
+            escalaTransformacion
+        );
+
+        if (desplazamientoVisible.sqrMagnitude <= 0f)
+        {
+            return Vector2.zero;
+        }
+
+        float velocidadVisibleMaxima = Mathf.Max(
+            escalaUnidades.x * escalaTransformacion.x,
+            escalaUnidades.y * escalaTransformacion.y
+        ) * movimiento.magnitude;
+        Vector2 desplazamientoUniforme = desplazamientoVisible.normalized * velocidadVisibleMaxima;
+
+        return new Vector2(
+            desplazamientoUniforme.x / Mathf.Max(0.0001f, escalaTransformacion.x),
+            desplazamientoUniforme.y / Mathf.Max(0.0001f, escalaTransformacion.y)
+        );
+    }
+
     public Vector3 Limitar(Vector3 posicionMundo)
     {
         return Limitar(posicionMundo, Vector2.zero);

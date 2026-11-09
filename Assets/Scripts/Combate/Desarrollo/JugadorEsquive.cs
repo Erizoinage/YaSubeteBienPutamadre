@@ -80,7 +80,7 @@ public class JugadorEsquive : MonoBehaviour
 
         if (!dashEnCurso)
         {
-            Vector2 desplazamiento = arena.ConvertirUnidades(
+            Vector2 desplazamiento = arena.ConvertirMovimiento(
                 entrada * velocidad * Time.deltaTime
             );
             transform.position = arena.Limitar(
@@ -201,7 +201,7 @@ public class JugadorEsquive : MonoBehaviour
         proximoDash = Time.time + enfriamientoDash;
         alHacerDash.Invoke();
 
-        Vector2 desplazamiento = arena.ConvertirUnidades(
+        Vector2 desplazamiento = arena.ConvertirMovimiento(
             ultimaDireccion * distanciaDash
         );
         Vector3 inicio = transform.position;
