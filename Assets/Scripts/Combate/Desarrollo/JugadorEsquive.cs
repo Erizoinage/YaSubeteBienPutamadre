@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 // Controla al jugador dentro del Canvas de la arena.
 [RequireComponent(typeof(RectTransform), typeof(UnityEngine.UI.Image))]
@@ -33,6 +34,7 @@ public class JugadorEsquive : MonoBehaviour
     [SerializeField] private UnityEvent alHacerDash = new UnityEvent();
 
     private RectTransform rectTransform;
+    private Image imagen;
     private ArenaEsquive arena;
     private Vector3 posicionReposoLocal;
     private Vector2 ultimaDireccion = Vector2.right;
@@ -51,6 +53,7 @@ public class JugadorEsquive : MonoBehaviour
     private void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
+        imagen = GetComponent<Image>();
         posicionReposoLocal = transform.localPosition;
     }
 
@@ -118,6 +121,14 @@ public class JugadorEsquive : MonoBehaviour
         invulnerableTrasGolpe = false;
     }
 
+    public void EstablecerVisibilidad(bool visible)
+    {
+        if (imagen != null)
+        {
+            imagen.enabled = visible;
+        }
+    }
+
     // Lo llama el proyectil cuando su rectángulo visual toca al jugador.
     public bool ProcesarImpacto(Proyectil proyectil)
     {
@@ -160,7 +171,8 @@ public class JugadorEsquive : MonoBehaviour
         Vector3 destino,
         float altura,
         float duracion,
-        ArenaEsquive arenaMovimiento
+        ArenaEsquive arenaMovimiento,
+        System.Action alLlegarAlPuntoMasAlto = null
     )
     {
         if (arenaMovimiento == null)
@@ -176,6 +188,7 @@ public class JugadorEsquive : MonoBehaviour
         );
         float progreso = 0f;
         float duracionSegura = Mathf.Max(0.01f, duracion);
+        bool seNotificoPuntoMasAlto = false;
 
         while (progreso < 1f)
         {
@@ -184,6 +197,13 @@ public class JugadorEsquive : MonoBehaviour
             Vector3 local = Vector3.Lerp(inicioLocal, destinoLocal, k);
             local.y += desplazamientoVertical.y * 4f * k * (1f - k);
             transform.position = espacio.TransformPoint(local);
+
+            if (!seNotificoPuntoMasAlto && k >= 0.5f)
+            {
+                seNotificoPuntoMasAlto = true;
+                alLlegarAlPuntoMasAlto?.Invoke();
+            }
+
             yield return null;
         }
 

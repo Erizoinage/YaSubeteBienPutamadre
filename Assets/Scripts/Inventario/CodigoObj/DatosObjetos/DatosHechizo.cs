@@ -2,12 +2,15 @@ using UnityEngine;
 
 [CreateAssetMenu(fileName = "Nuevo Hechizo", menuName = "Inventario/Hechizo")]
 
-public class DatosHechizo : DatosObjeto_Base
+public class DatosHechizo : DatosObjeto_Base, IAtaqueCombate
 {
     [Header("Propiedades de combate")]
     [Min(0)]public int dañoHechizo = 1;
     [Min(0)]public int costoEnergia = 1;
     [Min(0)]public int cantidadConsumidaPorUso = 1;
+
+    public int DanioBase => dañoHechizo;
+    public int CostoEnergia => costoEnergia;
 
     public int CalcularDañoTotal(EstadisticasJugador estadisticasJugador)
     {

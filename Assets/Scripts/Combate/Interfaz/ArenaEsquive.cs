@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -136,7 +137,7 @@ public class ArenaEsquive : MonoBehaviour
     }
 
     // El marco aparece y el jugador salta dentro.
-    public IEnumerator Entrar()
+    public IEnumerator Entrar(Action alAparecerJugador = null)
     {
         if (!ReferenciasValidas())
         {
@@ -144,6 +145,9 @@ public class ArenaEsquive : MonoBehaviour
         }
 
         marcoVisual.SetActive(true);
+        jugador.gameObject.SetActive(true);
+        jugador.EstablecerVisibilidad(true);
+        alAparecerJugador?.Invoke();
         yield return jugador.SaltarA(
             centroMarco.position,
             alturaSalto,
@@ -154,7 +158,7 @@ public class ArenaEsquive : MonoBehaviour
     }
 
     // El jugador regresa a su sitio y el marco desaparece.
-    public IEnumerator Salir()
+    public IEnumerator Salir(Action alDesaparecerJugador = null)
     {
         if (!ReferenciasValidas())
         {
@@ -167,9 +171,15 @@ public class ArenaEsquive : MonoBehaviour
             jugador.PosicionReposo,
             alturaSalto,
             duracionSalto,
-            this
+            this,
+            () =>
+            {
+                jugador.EstablecerVisibilidad(false);
+                alDesaparecerJugador?.Invoke();
+            }
         );
         marcoVisual.SetActive(false);
+        jugador.gameObject.SetActive(false);
     }
 
     // Para cuando el combate termina de golpe (por ejemplo, derrota).
@@ -181,9 +191,11 @@ public class ArenaEsquive : MonoBehaviour
         }
 
         jugador.DesactivarControl();
+        jugador.EstablecerVisibilidad(false);
         LimpiarProyectiles();
         jugador.transform.position = jugador.PosicionReposo;
         marcoVisual.SetActive(false);
+        jugador.gameObject.SetActive(false);
     }
 
     public IEnumerator EjecutarPatron(PatronAtaqueDatos patron, Combatiente combatienteJugador)

@@ -195,7 +195,9 @@ public class MenuAccionesUI : MonoBehaviour
             if (objeto is IAtaqueCombate ataque)
             {
                 texto = objeto.nombreObjeto + " (" + ataque.CostoEnergia + " EN)";
-                return jugador.Energia >= ataque.CostoEnergia;
+                bool cantidadDisponible = !(objeto is DatosHechizo hechizo) ||
+                    slot.Cantidad >= hechizo.cantidadConsumidaPorUso;
+                return cantidadDisponible && jugador.Energia >= ataque.CostoEnergia;
             }
 
             Debug.LogWarning(objeto.nombreObjeto + " no implementa IAtaqueCombate, por eso su botón está desactivado.", objeto);

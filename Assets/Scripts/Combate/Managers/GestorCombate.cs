@@ -1,10 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
-
-// Gestor de turnos. Solo decide el orden de las fases; cada pieza
-// (menú, barra de multiplicador, arena, panel) hace su propio trabajo.
-// IMPORTANTE: ponlo en un objeto que NO se desactive (fuera del panel de combate).
+using UnityEngine.UI;
 public class GestorCombate : MonoBehaviour
 {
     public static bool EnCombate { get; private set; }
@@ -25,6 +22,7 @@ public class GestorCombate : MonoBehaviour
     [SerializeField] private MenuAccionesUI menu;
     [SerializeField] private BarraMultiplicadorUI barraMultiplicador;
     [SerializeField] private ArenaEsquive arena;
+    [SerializeField] private RawImage imagenJugadorCombate;
 
     [Header("Reglas")]
     [SerializeField, Min(0)] private int energiaPorTurno = 5;
@@ -78,6 +76,8 @@ public class GestorCombate : MonoBehaviour
         EnCombate = true;
 
         raizInterfazCombate.SetActive(true);
+        arena.CerrarInmediato();
+        EstablecerVisibilidadImagenJugador(true);
         movimientoJugador.DesactivarMovimiento();
         enemigo.Configurar(datos.vidaMaxima, 0);
         jugador.RestaurarEnergia();
@@ -90,9 +90,6 @@ public class GestorCombate : MonoBehaviour
     {
         EnCombate = false;
     }
-
-    // ---------- Bucle principal ----------
-
     private IEnumerator BucleCombate()
     {
         yield return Fase(FaseCombate.Intro, RutinaIntro());
@@ -128,8 +125,6 @@ public class GestorCombate : MonoBehaviour
         return StartCoroutine(rutina);
     }
 
-    // ---------- Fases ----------
-
     private IEnumerator RutinaIntro()
     {
         panel.Mostrar(datos);
@@ -142,6 +137,7 @@ public class GestorCombate : MonoBehaviour
 
     private IEnumerator RutinaTurnoJugador()
     {
+        EstablecerVisibilidadImagenJugador(true);
         efectos.ProcesarInicioDeTurno(jugador);
         jugador.RecuperarEnergia(energiaPorTurno);
 
@@ -180,7 +176,9 @@ public class GestorCombate : MonoBehaviour
     {
         barras.PrepararVisibleEnCanvas();
         yield return Decir(FrasesEnemigo.Elegir(datos.frases.prepararTurnoRival));
-        yield return StartCoroutine(arena.Entrar());
+        yield return StartCoroutine(arena.Entrar(
+            () => EstablecerVisibilidadImagenJugador(false)
+        ));
         barras.PrepararVisibleEnCanvas();
     }
 
@@ -196,7 +194,9 @@ public class GestorCombate : MonoBehaviour
 
     private IEnumerator RutinaPreparaTurnoJugador()
     {
-        yield return StartCoroutine(arena.Salir());
+        yield return StartCoroutine(arena.Salir(
+            () => EstablecerVisibilidadImagenJugador(true)
+        ));
 
         numeroDeTurno++;
         yield return Decir(FrasesEnemigo.Elegir(datos.frases.prepararTurnoJugador));
@@ -205,6 +205,7 @@ public class GestorCombate : MonoBehaviour
     private IEnumerator RutinaFinal()
     {
         arena.CerrarInmediato();
+        EstablecerVisibilidadImagenJugador(true);
         menu.Ocultar();
 
         string[] frases;
@@ -238,7 +239,13 @@ public class GestorCombate : MonoBehaviour
         CombateTerminado?.Invoke(resultado.Value);
     }
 
-    // ---------- Acciones del jugador ----------
+    private void EstablecerVisibilidadImagenJugador(bool visible)
+    {
+        if (imagenJugadorCombate != null)
+        {
+            imagenJugadorCombate.enabled = visible;
+        }
+    }
 
     private IEnumerator EjecutarAtaque(SlotEspecial slot)
     {
@@ -251,7 +258,21 @@ public class GestorCombate : MonoBehaviour
         DatosObjeto_Base objeto = slot.Objeto;
         IAtaqueCombate ataque = objeto as IAtaqueCombate;
 
-        if (ataque == null || !jugador.GastarEnergia(ataque.CostoEnergia))
+        if (ataque == null)
+        {
+            yield break;
+        }
+
+        int cantidadHechizos = objeto is DatosHechizo hechizo
+            ? hechizo.cantidadConsumidaPorUso
+            : 0;
+
+        if (cantidadHechizos > 0 && slot.Cantidad < cantidadHechizos)
+        {
+            yield break;
+        }
+
+        if (!jugador.GastarEnergia(ataque.CostoEnergia))
         {
             yield break;
         }
@@ -264,9 +285,8 @@ public class GestorCombate : MonoBehaviour
             yield break;
         }
 
-        // Las armas no se gastan; los hechizos se gastan de uno en uno.
-        if (objeto.etiqueta == TipoDeObjeto.Echizo &&
-            !equipamiento.ConsumirDesdeSlot(slot, 1))
+        if (cantidadHechizos > 0 &&
+            !equipamiento.ConsumirDesdeSlot(slot, cantidadHechizos))
         {
             jugador.RecuperarEnergia(ataque.CostoEnergia);
             yield break;
@@ -303,8 +323,6 @@ public class GestorCombate : MonoBehaviour
         turnoConsumido = true;
     }
 
-    // ---------- Utilidades ----------
-
     private Coroutine Decir(string frase, bool esperarConfirmacion = false)
     {
         frase = (frase ?? string.Empty).Replace("{enemigo}", datos.nombre);
@@ -314,7 +332,8 @@ public class GestorCombate : MonoBehaviour
     private bool ReferenciasValidas()
     {
         if (movimientoJugador && jugador && equipamiento && efectos && enemigo &&
-            panel && barras && menu && barraMultiplicador && arena)
+            panel && barras && menu && barraMultiplicador && arena &&
+            imagenJugadorCombate)
         {
             return true;
         }
