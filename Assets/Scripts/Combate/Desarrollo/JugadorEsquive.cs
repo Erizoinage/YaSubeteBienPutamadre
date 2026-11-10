@@ -48,9 +48,6 @@ public class JugadorEsquive : MonoBehaviour
             ? transform.parent.TransformPoint(posicionReposoLocal)
             : posicionReposoLocal;
 
-    private bool EsInvulnerable =>
-        invulnerableTrasGolpe || (dashEnCurso && invulnerableEnDash);
-
     private void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
@@ -122,11 +119,11 @@ public class JugadorEsquive : MonoBehaviour
     }
 
     // Lo llama el proyectil cuando su rectángulo visual toca al jugador.
-    public void ProcesarImpacto(Proyectil proyectil)
+    public bool ProcesarImpacto(Proyectil proyectil)
     {
         if (!controlActivo || stats == null || stats.EstaDerrotado)
         {
-            return;
+            return true;
         }
 
         if (parryActivo && proyectil.EsParreable)
@@ -134,18 +131,24 @@ public class JugadorEsquive : MonoBehaviour
             proyectil.Destruir();
             stats.RecuperarEnergia(energiaPorParry);
             alParrear.Invoke();
-            return;
+            return true;
         }
 
-        if (EsInvulnerable)
+        if (dashEnCurso && invulnerableEnDash)
         {
-            return;
+            return false;
+        }
+
+        if (invulnerableTrasGolpe)
+        {
+            return true;
         }
 
         stats.RecibirDanio(proyectil.Danio);
         proyectil.Destruir();
         alRecibirGolpe.Invoke();
         StartCoroutine(InvulnerabilidadTrasGolpe());
+        return true;
     }
 
     public bool Contiene(RectTransform otro)

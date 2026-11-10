@@ -20,7 +20,7 @@ public class MenuAccionesUI : MonoBehaviour
     [SerializeField] private GameObject contenedorSubmenu;
     [SerializeField] private Button[] botonesSlot = new Button[3];
     [SerializeField] private TMP_Text[] textosSlot = new TMP_Text[3];
-    [Tooltip("Opcional: Image hija de cada botón donde se muestra el icono del objeto.")]
+    [Tooltip("Opcional: asigna la Image de cada espacio; se usa tanto para armas como para consumibles.")]
     [SerializeField] private Image[] iconosSlot = new Image[3];
     [SerializeField] private Button botonVolver;
 
@@ -117,7 +117,7 @@ public class MenuAccionesUI : MonoBehaviour
                 textosSlot[i].text = texto;
             }
 
-            Image imagenIcono = ObtenerImagenIcono(i, boton);
+            Image imagenIcono = ObtenerImagenIconoAsignado(i);
             if (imagenIcono != null)
             {
                 imagenIcono.sprite = icono;
@@ -147,7 +147,7 @@ public class MenuAccionesUI : MonoBehaviour
         Seleccionar(primerUtilizable != null ? primerUtilizable : botonVolver);
     }
 
-    private Image ObtenerImagenIcono(int indice, Button boton)
+    private Image ObtenerImagenIconoAsignado(int indice)
     {
         if (iconosSlot != null &&
             indice < iconosSlot.Length &&
@@ -156,31 +156,7 @@ public class MenuAccionesUI : MonoBehaviour
             return iconosSlot[indice];
         }
 
-        Image[] imagenes = boton.GetComponentsInChildren<Image>(true);
-        foreach (Image imagen in imagenes)
-        {
-            if (imagen != boton.targetGraphic)
-            {
-                return imagen;
-            }
-        }
-
-        GameObject objetoIcono = new GameObject(
-            "IconoObjeto",
-            typeof(RectTransform),
-            typeof(CanvasRenderer),
-            typeof(Image)
-        );
-        objetoIcono.transform.SetParent(boton.transform, false);
-
-        RectTransform rectTransform = objetoIcono.GetComponent<RectTransform>();
-        rectTransform.anchorMin = new Vector2(0f, 0.5f);
-        rectTransform.anchorMax = new Vector2(0f, 0.5f);
-        rectTransform.pivot = new Vector2(0f, 0.5f);
-        rectTransform.anchoredPosition = new Vector2(8f, 0f);
-        rectTransform.sizeDelta = new Vector2(48f, 48f);
-
-        return objetoIcono.GetComponent<Image>();
+        return null;
     }
 
     private void ReservarEspacioParaIcono(Button boton)

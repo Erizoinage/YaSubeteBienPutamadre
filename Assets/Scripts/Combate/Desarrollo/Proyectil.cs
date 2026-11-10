@@ -116,8 +116,7 @@ public class Proyectil : MonoBehaviour
 
         if (!impactoProcesado && objetivo != null && objetivo.Contiene(rectTransform))
         {
-            impactoProcesado = true;
-            objetivo.ProcesarImpacto(this);
+            impactoProcesado = objetivo.ProcesarImpacto(this);
         }
     }
 
