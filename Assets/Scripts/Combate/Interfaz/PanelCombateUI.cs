@@ -75,7 +75,6 @@ public class PanelCombateUI : MonoBehaviour
         Ocultar();
     }
 
-    // Escribe el texto letra por letra. Confirmar lo muestra completo.
     public IEnumerator MostrarTexto(string texto, bool esperarConfirmacion = false)
     {
         if (string.IsNullOrEmpty(texto))

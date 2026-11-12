@@ -42,12 +42,9 @@ public class MovimientoJugador : MonoBehaviour
         if (!movimientoActivo)
             return;
 
-        rb.MovePosition(
-            rb.position + movimiento * velocidad * Time.fixedDeltaTime
-        );
+        rb.MovePosition( rb.position + movimiento * velocidad * Time.fixedDeltaTime );
     }
 
-    // Esta función se conecta en Player Input usando Invoke Unity Events.
     public void OnMove(InputAction.CallbackContext contexto)
     {
         if (!movimientoActivo)
@@ -71,10 +68,7 @@ public class MovimientoJugador : MonoBehaviour
             }
             else if (movimientoY > movimientoX)
             {
-                ultimaDireccion = new Vector2(
-                    0,
-                    Mathf.Sign(movimiento.y)
-                );
+                ultimaDireccion = new Vector2( 0, Mathf.Sign(movimiento.y));
             }
         }
 
@@ -134,10 +128,7 @@ public class MovimientoJugador : MonoBehaviour
         return movimientoActivo;
     }
 
-    public void EstablecerEquipamientoVisual(
-        DatosEquipable casco,
-        DatosEquipable armadura
-    )
+    public void EstablecerEquipamientoVisual(DatosEquipable casco,DatosEquipable armadura)
     {
         if (visualEquipamiento == null)
         {
@@ -159,15 +150,11 @@ public class MovimientoJugador : MonoBehaviour
         {
             if (GestorCombate.EnCombate) return;
 
-            InventoryManager inventoryManager =
-                FindAnyObjectByType<InventoryManager>();
+            InventoryManager inventoryManager = FindAnyObjectByType<InventoryManager>();
 
             if (inventoryManager == null)
             {
-                Debug.LogWarning(
-                    "No se encontró un InventoryManager en la escena.",
-                    this
-                );
+                Debug.LogWarning("No se encontró un InventoryManager en la escena.",this);
 
                 return;
             }

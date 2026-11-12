@@ -1,8 +1,5 @@
 using UnityEngine;
 
-// Va en el mismo objeto que JugadorEsquive y VisualEquipamiento.
-// Cada vez que el panel de combate se activa, copia el casco y la pechera
-// que tienes equipados en el inventario al personaje del marco.
 [RequireComponent(typeof(VisualEquipamiento))]
 public class EquipamientoVisualCombate : MonoBehaviour
 {

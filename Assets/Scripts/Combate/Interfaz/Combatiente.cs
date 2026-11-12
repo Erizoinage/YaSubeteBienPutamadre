@@ -1,7 +1,5 @@
 using System;
 using UnityEngine;
-
-// Vida y energía de quien participa en el combate (jugador o enemigo).
 public class Combatiente : MonoBehaviour
 {
     [SerializeField, Min(1)] private int vidaMaxima = 100;
@@ -16,8 +14,6 @@ public class Combatiente : MonoBehaviour
     public int VidaMaxima => vidaMaxima;
     public int EnergiaMaxima => energiaMaxima;
     public bool EstaDerrotado => Vida <= 0;
-
-    // (valor actual, valor máximo)
     public event Action<int, int> VidaCambiada;
     public event Action<int, int> EnergiaCambiada;
 

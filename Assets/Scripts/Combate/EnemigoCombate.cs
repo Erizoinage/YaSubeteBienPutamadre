@@ -1,8 +1,5 @@
 using UnityEngine;
 
-// Ponlo en el enemigo del mapa, junto a un Collider2D con Is Trigger
-// (su radio es la distancia a la que se activa el combate).
-// El jugador necesita un Rigidbody2D para que Unity detecte el trigger.
 public class EnemigoCombate : MonoBehaviour
 {
     [SerializeField] private DatosEnemigo datos;
@@ -42,9 +39,6 @@ public class EnemigoCombate : MonoBehaviour
         {
             gameObject.SetActive(false);
         }
-
-        // Si huyes, el combate no vuelve a empezar hasta que salgas
-        // del radio y vuelvas a entrar.
     }
 
     private void OnDestroy()

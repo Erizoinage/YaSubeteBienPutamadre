@@ -29,8 +29,6 @@ public class GestorCombate : MonoBehaviour
     [SerializeField] private TextosSistema textos = new TextosSistema();
 
     public FaseCombate FaseActual { get; private set; } = FaseCombate.Inactivo;
-
-    // Úsalos para enganchar animaciones, música, game over, recompensas, etc.
     public event Action<FaseCombate> FaseCambiada;
     public event Action<ResultadoCombate> CombateTerminado;
 

@@ -3,7 +3,6 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-// Controla al jugador dentro del Canvas de la arena.
 [RequireComponent(typeof(RectTransform), typeof(UnityEngine.UI.Image))]
 public class JugadorEsquive : MonoBehaviour
 {
